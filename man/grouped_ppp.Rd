@@ -2,7 +2,7 @@
 % Please edit documentation in R/grouped_ppp.R
 \name{grouped_ppp}
 \alias{grouped_ppp}
-\title{Cluster Point Pattern}
+\title{Grouped \link[spatstat.geom]{hyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}}
 \usage{
 grouped_ppp(
   formula,
@@ -22,7 +22,7 @@ and \eqn{g_k} are one or more hierarchical grouping structure
 
 \item{data}{\link[base]{data.frame}}
 
-\item{coords}{\link[stats]{formula} containing the variable names
+\item{coords}{\link[stats]{formula}, variable names
 of \eqn{x}- and \eqn{y}-coordinates in \code{data}.
 Default \code{~x+y}.}
 
@@ -41,4 +41,10 @@ with \emph{\strong{one-and-only-one}}
 }
 \details{
 ...
+}
+\examples{
+library(spatstat.grouped.data)
+library(survival) # to help ?spatstat.geom::hyperframe understand ?survival::Surv
+s = grouped_ppp(hladr + phenotype ~ OS + gender + age | patient_id/image_id, data = wrobel_lung)
+head(s)
 }

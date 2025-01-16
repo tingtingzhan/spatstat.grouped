@@ -1,7 +1,7 @@
 
 
 
-#' @title Cluster Point Pattern
+#' @title Grouped \link[spatstat.geom]{hyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}
 #' 
 #' @description
 #' ..
@@ -15,7 +15,7 @@
 #' 
 #' @param data \link[base]{data.frame}
 #' 
-#' @param coords \link[stats]{formula} containing the variable names
+#' @param coords \link[stats]{formula}, variable names
 #' of \eqn{x}- and \eqn{y}-coordinates in `data`.
 #' Default `~x+y`.
 #' 
@@ -34,6 +34,11 @@
 #' with ***one-and-only-one*** 
 #' \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}.
 #' 
+#' @examples
+#' library(spatstat.grouped.data)
+#' library(survival) # to help ?spatstat.geom::hyperframe understand ?survival::Surv
+#' s = grouped_ppp(hladr + phenotype ~ OS + gender + age | patient_id/image_id, data = wrobel_lung)
+#' head(s)
 #' @importFrom parallel mclapply detectCores
 #' @importFrom spatstat.geom owin ppp hyperframe
 #' @export
@@ -86,9 +91,19 @@ grouped_ppp <- function(
     list(ppp_ = ppps),
     as.list.data.frame(dat0)
   ))
+  
+  # additional attributes to mimic ?nlme::groupedData
+  # also see example 'groupedData's from package datasets
+  
+  attr(hf, which = 'group') <- call('~', group) # not carrying `f_ppp`, for now
+  # for ?nlme::getGroupsFormula
+  
+  class(hf) <- unique.default(c('grouped_hyperframe', class(hf)))
   return(hf)
   
 }
+
+
 
 # Tingting is not ready to suggest changing [split.ppp] to Dr. Baddeley, yet..
 # [split_ppp_dataframe] is a bandage-fix which respects col-1 dataframe
@@ -148,6 +163,9 @@ split_ppp_dataframe <- function(x, f) {
   return(ret)
 
 }
+
+
+
 
 
 
