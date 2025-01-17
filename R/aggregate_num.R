@@ -41,6 +41,7 @@ aggregate_num <- function(
     X, 
     by = stop('must specify `by`'),
     FUN,
+    FUN.name = deparse1(substitute(FUN)),
     f_aggr_ = c('mean', 'median', 'max', 'min'), 
     ...
 ) {
@@ -74,7 +75,7 @@ aggregate_num <- function(
   ret0 <- lapply(c(hyper_num_, mark_num_), FUN = function(x) {
     do.call(what = rbind, args = lapply(x, FUN = FUN, ...))
   })
-  names(ret0) <- paste(names(ret0), deparse1(substitute(FUN)), sep = '.')
+  names(ret0) <- paste(names(ret0), FUN.name, sep = '.')
   
   if (any(names(ret0) %in% names(x))) {
     warning('Existing column(s) overwritten')
@@ -108,7 +109,9 @@ aggregate_num <- function(
 
 
 
-
+# @section Step 1. Cluster-Specific Sample Quantiles [clusterQp] 
+# (superseded by grouped_ppp() |> aggregate_quantile):
+# Function [clusterQp] calculates user-selected sample quantiles in each cluster of observations.
 #' @rdname aggregate_num
 #' 
 #' @details
@@ -117,7 +120,18 @@ aggregate_num <- function(
 #' 
 #' @importFrom stats quantile
 #' @export
-aggregate_quantile <- function(X, ...) aggregate_num(X, FUN = quantile, ...)
+aggregate_quantile <- function(X, ...) aggregate_num(X, FUN = .quantile_num_name, FUN.name = 'quantile', ...)
+
+
+
+#' @importFrom stats quantile
+.quantile_num_name <- function(x, probs, ...) {
+  qs <- quantile(x, probs, ...)
+  # see last few rows of ?stats:::quantile.default
+  names(qs) <- probs
+  return(qs)
+}
+
 
 
 

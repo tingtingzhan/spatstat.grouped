@@ -10,6 +10,7 @@ aggregate_num(
   X,
   by = stop("must specify `by`"),
   FUN,
+  FUN.name = deparse1(substitute(FUN)),
   f_aggr_ = c("mean", "median", "max", "min"),
   ...
 )
