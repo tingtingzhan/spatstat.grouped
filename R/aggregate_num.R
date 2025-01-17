@@ -23,6 +23,9 @@
 #' @param FUN \link[base]{function} to extract information, currently supports 
 #' functions \link[stats]{quantile} and [kerndens]
 #' 
+#' @param FUN.name (optional) \link[base]{character} scalar,
+#' user-friendly name of `FUN`
+#' 
 #' @param f_aggr_ \link[base]{character} scalar, method to aggregate
 #' within cluster, currently supports
 #' `'mean'`, `'median'`, `'max'`, and `'min'`.

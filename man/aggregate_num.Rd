@@ -36,6 +36,9 @@ Do \strong{not} use multi-level hierarchy, e.g., \code{~patient/image}}
 \item{FUN}{\link[base]{function} to extract information, currently supports
 functions \link[stats]{quantile} and \link{kerndens}}
 
+\item{FUN.name}{(optional) \link[base]{character} scalar,
+user-friendly name of \code{FUN}}
+
 \item{f_aggr_}{\link[base]{character} scalar, method to aggregate
 within cluster, currently supports
 \code{'mean'}, \code{'median'}, \code{'max'}, and \code{'min'}.}
