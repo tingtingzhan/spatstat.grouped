@@ -62,7 +62,7 @@ aggregate_num <- function(
   }, FUN.VALUE = NA)
   if (sum(hc_ppp) > 1L) stop('does not allow more than 1 ppp-hypercolumn')
   if (sum(hc_ppp) == 1L) {
-    mk_ <- lapply(hc[[names(which(hc_ppp))]], FUN = marks.ppp)
+    mk_ <- lapply(hc[[names(which(hc_ppp))]], FUN = marks.ppp, drop = FALSE)
     mk <- .mapply(FUN = list, dots = mk_, MoreArgs = NULL)
     names(mk) <- names(mk_[[1L]])
     mk_num <- vapply(mk, FUN = function(x) {
