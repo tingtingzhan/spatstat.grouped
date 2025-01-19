@@ -49,10 +49,9 @@ aggregate_num <- function(
     ...
 ) {
   
-  X0 <- unclass(X) 
-  x <- X0$df # to be returned later
-  
-  hc <- X0$hypercolumns
+  # Step 1: Find numeric information
+
+  hc <- unclass(X)$hypercolumns
   
   # 'numeric'-`hypercolumns`
   hc_num <- vapply(hc, FUN = function(x) {
@@ -80,23 +79,68 @@ aggregate_num <- function(
   })
   names(ret0) <- paste(names(ret0), FUN.name, sep = '.')
   
-  if (any(names(ret0) %in% names(x))) {
+  if (any(names(ret0) %in% names(X))) {
     warning('Existing column(s) overwritten')
     #warning(sprintf(fmt = 'Existing `%s` column overwritten', nm_iso))
   }
   
-  f <- x[[by[[2L]]]]
+  # Step 2: aggregation
+  
+  aggregate_by_(dots = ret0, X = X, by = by, f_aggr_ = f_aggr_)
+  
+}
+
+
+
+#' @title Aggregate-By, for `groupedHyperframe`
+#' 
+#' @param dots a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es
+#' 
+#' @param X a `groupedHyperframe`
+#' 
+#' @param by,f_aggr_ see function [aggregate_num]
+#' 
+#' @details
+#' Function [aggregate_by_] checks `by` against `attr(X,'group')`.
+#' 
+#' @returns 
+#' Function [aggregate_by_] returns 
+#' a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es.
+#'  
+#' @keywords internal
+#' @export
+aggregate_by_ <- function(
+    dots, # 
+    X, # 
+    by, # 'formula'
+    f_aggr_ = c('mean', 'median', 'max', 'min')
+) {
+  
+  x <- unclass(X)$df
+  group <- attr(X, which = 'group', exact = TRUE)
+  
+  if (!is.symbol(by. <- by[[2L]])) stop('`by` must be a formula and RHS must be a symbol')
+  # `group` 'up-to' `by.`
+  # how to do it beautifully?
+  # below is an ugly bandage fix
+  g <- all.vars(group)
+  id <- match(as.character(by.), table = g)
+  if (is.na(id)) stop('`by` must match the group of groupedHyperframe')
+  f. <- Reduce(f = function(e1, e2) call(name = '/', e1, e2), x = lapply(g[seq_len(id)], FUN = as.symbol))
+  # end of ugly bandage fix
+  
+  f <- nested_(lang = f., data = x)
   ids <- split.default(seq_along(f), f = f)
   
   if (all(lengths(ids) == 1L)) {
     # no need to aggregate
-    x[names(ret0)] <- ret0 # done!
+    x[names(dots)] <- dots # done!
     
   } else {
     
     x <- .data_unique(data = x, f = f)
     fn <- switch(match.arg(f_aggr_), mean = colMeans, median = colMedians, max = colMaxs, min = colMins)
-    x[names(ret0)] <- lapply(ret0, FUN = function(m) {
+    x[names(dots)] <- lapply(dots, FUN = function(m) {
       do.call(what = rbind, args = lapply(ids, FUN = function(i) fn(m[i,,drop = FALSE])))
     })
     
@@ -105,9 +149,6 @@ aggregate_num <- function(
   return(x)
   
 }
-
-
-#aggregate_
 
 
 

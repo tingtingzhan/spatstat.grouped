@@ -58,10 +58,15 @@ op_hyperframe <- function(X, op, ...) {
   ret1 <- .mapply(FUN = list, dots = ret0, MoreArgs = NULL)
   names(ret1) <- names(ret0[[1L]])
   
-  return(do.call(
+  ret <- do.call(
     what = cbind.hyperframe, 
     args = c(list(X), ret1)
-  ))
+  )
+  if (inherits(X, what = 'groupedHyperframe')) {
+    attr(ret, which = 'group') <- attr(X, which = 'group', exact = TRUE)
+    class(ret) <- c('groupedHyperframe', class(X))
+  } # a bandage fix, for now
+  return(ret)
   
 }
 

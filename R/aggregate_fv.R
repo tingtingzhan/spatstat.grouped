@@ -59,24 +59,7 @@ aggregate_fv <- function(
     #warning(sprintf(fmt = 'Existing `%s` column overwritten', nm_iso))
   }
   
-  f <- x[[by[[2L]]]]
-  ids <- split.default(seq_along(f), f = f)
-  
-  if (all(lengths(ids) == 1L)) {
-    # no need to aggregate
-    x[names(ret1)] <- ret1 # done!
-    
-  } else {
-    
-    x <- .data_unique(data = x, f = f)
-    fn <- switch(match.arg(f_aggr_), mean = colMeans, median = colMedians, max = colMaxs, min = colMins)
-    x[names(ret1)] <- lapply(ret1, FUN = function(m) {
-      do.call(what = rbind, args = lapply(ids, FUN = function(i) fn(m[i,,drop = FALSE])))
-    })
-    
-  }
-  
-  return(x)
-  
+  aggregate_by_(dots = ret1, X = X, by = by, f_aggr_ = f_aggr_)
+
 }
 

@@ -98,7 +98,7 @@ grouped_ppp <- function(
   attr(hf, which = 'group') <- call('~', group) # not carrying `f_ppp`, for now
   # for ?nlme::getGroupsFormula
   
-  class(hf) <- unique.default(c('grouped_hyperframe', class(hf)))
+  class(hf) <- unique.default(c('groupedHyperframe', class(hf)))
   return(hf)
   
 }
