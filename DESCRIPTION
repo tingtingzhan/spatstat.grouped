@@ -2,10 +2,7 @@ Package: spatstat.grouped
 Type: Package
 Title: spatstat.grouped
 Version: 0.1.0
-Date: 2023-03-16
-Author: Tingting Zhan [aut, cre, cph]
-        (<https://orcid.org/0000-0001-9971-4844>), Inna Chervoneva [aut,
-        cph] (<https://orcid.org/0000-0002-9104-4505>)
+Date: 2025-01-20
 Maintainer: Tingting Zhan <tingtingzhan@gmail.com>
 Description: A story about spatstat.grouped.
 Roxygen: list(markdown = TRUE)
@@ -14,12 +11,13 @@ Encoding: UTF-8
 License: GPL-2
 Depends: R (>= 4.4),
 Language: en-US
-Authors@R: c(person(given = 'Tingting', family =
-        'Zhan', role = c('aut', 'cre'), email =
-        'tingtingzhan@gmail.com', comment = c(ORCID =
-        '0000-0001-9971-4844')), person(given = 'Inna', family =
-        'Chervoneva', role = c('aut'), email =
-        'Inna.Chervoneva@jefferson.edu', comment = c(ORCID =
-        '0000-0002-9104-4505')))
-Imports: parallel, stats, nlme, matrixStats, pracma, spatstat.explore (>= 3.3.4), spatstat.geom (>= 3.3.4.10)
-Suggests: knitr, MASS, survival, spatstat.data (>= 3.1.4), spatstat.grouped.data
+Authors@R: c(person(given = 'Tingting', family = 'Zhan', role =
+       c('aut', 'cre'), email = 'tingtingzhan@gmail.com', comment
+       = c(ORCID = '0000-0001-9971-4844')), person(given = 'Inna',
+       family = 'Chervoneva', role = c('aut'), email =
+       'Inna.Chervoneva@jefferson.edu', comment = c(ORCID =
+       '0000-0002-9104-4505')))
+Imports: parallel, stats, nlme, matrixStats, pracma,
+       spatstat.explore (>= 3.3.4), spatstat.geom (>= 3.3.4.10)
+Suggests: knitr, MASS, survival, spatstat.data (>= 3.1.4),
+       spatstat.grouped.data

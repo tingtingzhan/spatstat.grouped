@@ -75,7 +75,7 @@ grouped_ppp <- function(
   
   f_ppp <- if (is.symbol(group)) { # 1-level
     data[[group]] # 'factor'
-  } else nested_(lang = group, data = data, lex.order = TRUE) # 'nested'
+  } else interaction(data[all.vars(group)], drop = TRUE, sep = '.', lex.order = TRUE)
   
   dat0 <- .data_unique(data = data[all.vars(formula[[3L]])], f = f_ppp)
   
@@ -153,7 +153,7 @@ split_ppp_dataframe <- function(x, f) {
   
   if (any(!is_same_by_f)) {
     nm <- names(data)[!is_same_by_f]
-    message('Column(s) ', sQuote(nm), ' not identical per `f`; thus removed')
+    message('Column(s) ', sQuote(nm), ' not identical per aggregation-cluster; thus removed')
     data[nm] <- NULL
   }
 

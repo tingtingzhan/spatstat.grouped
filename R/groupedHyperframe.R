@@ -12,6 +12,9 @@
 #' \item{`attr(,'group')`}{\link[stats]{formula}}
 #' }
 #' 
+#' @returns 
+#' A [groupedHyperframe]
+#' 
 #' @name groupedHyperframe
 NULL
 
@@ -50,6 +53,9 @@ print.groupedHyperframe <- function(x, ...) {
 #' @param x a [groupedHyperframe]
 #' 
 #' @param ... additional parameters of \link[spatstat.geom]{[.hyperframe}
+#' 
+#' @returns
+#' Function \link{[.groupedHyperframe} returns a [groupedHyperframe] or a \link[spatstat.geom]{hyperframe}.
 #' 
 #' @importFrom spatstat.geom [.hyperframe
 #' @export [.groupedHyperframe

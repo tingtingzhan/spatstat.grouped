@@ -11,6 +11,9 @@
 
 \item{...}{additional parameters of \link[spatstat.geom]{[.hyperframe}}
 }
+\value{
+Function \link{[.groupedHyperframe} returns a \link{groupedHyperframe} or a \link[spatstat.geom]{hyperframe}.
+}
 \description{
 Extract Subset of \link{groupedHyperframe}
 }

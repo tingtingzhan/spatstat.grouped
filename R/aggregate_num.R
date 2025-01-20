@@ -125,11 +125,10 @@ aggregate_by_ <- function(
   # below is an ugly bandage fix
   g <- all.vars(group)
   id <- match(as.character(by.), table = g)
-  if (is.na(id)) stop('`by` must match the group of groupedHyperframe')
-  f. <- Reduce(f = function(e1, e2) call(name = '/', e1, e2), x = lapply(g[seq_len(id)], FUN = as.symbol))
+  if (is.na(id)) stop('`by` must match one of the hierarchy in groupedHyperframe')
   # end of ugly bandage fix
   
-  f <- nested_(lang = f., data = x)
+  f <- interaction(x[g[seq_len(id)]], drop = TRUE, sep = '.', lex.order = TRUE)
   ids <- split.default(seq_along(f), f = f)
   
   if (all(lengths(ids) == 1L)) {

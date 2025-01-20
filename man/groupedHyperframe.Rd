@@ -3,6 +3,9 @@
 \name{groupedHyperframe}
 \alias{groupedHyperframe}
 \title{Grouped Hyperframe}
+\value{
+A \link{groupedHyperframe}
+}
 \description{
 A class \link{groupedHyperframe} to represent \link[spatstat.geom]{hyperframe}
 with a (multilevel) hierarchical structure.
