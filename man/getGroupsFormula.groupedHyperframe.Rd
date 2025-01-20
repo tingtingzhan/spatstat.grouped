@@ -2,12 +2,12 @@
 % Please edit documentation in R/groupedHyperframe.R
 \name{getGroupsFormula.groupedHyperframe}
 \alias{getGroupsFormula.groupedHyperframe}
-\title{Extract Grouping Formula from \code{groupedHyperframe}}
+\title{Extract Grouping Formula from \link{groupedHyperframe}}
 \usage{
 \method{getGroupsFormula}{groupedHyperframe}(object, asList, sep)
 }
 \arguments{
-\item{object}{a \code{groupedHyperframe}}
+\item{object}{a \link{groupedHyperframe}}
 
 \item{asList, sep}{place holders for S3 generic \link[nlme]{getGroupsFormula}}
 }

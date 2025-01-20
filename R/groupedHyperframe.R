@@ -1,8 +1,25 @@
 
-
-#' @title Print `groupedHyperframe`
+#' @title Grouped Hyperframe
 #' 
-#' @param x a `groupedHyperframe`
+#' @description
+#' A class [groupedHyperframe] to represent \link[spatstat.geom]{hyperframe} 
+#' with a (multilevel) hierarchical structure.
+#' 
+#' @details
+#' The class [groupedHyperframe] inherits from class \link[spatstat.geom]{hyperframe}.
+#' This class has additional \link[base]{attributes} 
+#' \describe{
+#' \item{`attr(,'group')`}{\link[stats]{formula}}
+#' }
+#' 
+#' @name groupedHyperframe
+NULL
+
+
+
+#' @title Print [groupedHyperframe]
+#' 
+#' @param x a [groupedHyperframe]
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
@@ -15,32 +32,50 @@
 #' @export print.groupedHyperframe
 #' @export
 print.groupedHyperframe <- function(x, ...) {
-  cat('Grouped Hyperframe: ')
+  cat('\nGrouped Hyperframe: ')
   grp <- attr(x, which = 'group', exact = TRUE)
   #if (identical(emptyenv(), environment(grp))) {
   #  environment(grp) <- globalenv()
   #} # not sure how this is useful in ?nlme:::print.groupedData
   print(grp, ...)
+  cat('\n')
   print(as.data.frame.hyperframe(x, discard = FALSE), ...) # see inside ?spatstat.geom::print.hyperframe
 }
 
-# ?spatstat.geom::head.hyperframe
-# need to wrint head.groupedHyperframe -- NOOOOO!!!!
-
-# @title Extract Subset of `groupedHyperframe`
-# 
-# @param name description
-#spatstat.geom::`[.hyperframe`
 
 
 
+#' @title Extract Subset of [groupedHyperframe]
+#' 
+#' @param x a [groupedHyperframe]
+#' 
+#' @param ... additional parameters of \link[spatstat.geom]{[.hyperframe}
+#' 
+#' @importFrom spatstat.geom [.hyperframe
+#' @export [.groupedHyperframe
+#' @export
+`[.groupedHyperframe` <- function(x, ...) {
+  
+  ret <- `[.hyperframe`(x, ...)
+  
+  # a bandage fix hahaha
+  group <- attr(x, which = 'group', exact = TRUE)
+  if (!all(all.vars(group) %in% names(ret))) return(ret) # just 'hyperframe'
+    
+  attr(ret, which = 'group') <- group
+  class(ret) <- unique.default(c('groupedHyperframe', class(ret)))
+  return(ret)
+}
 
 
-#' @title Extract Grouping Formula from `groupedHyperframe`
+
+
+
+#' @title Extract Grouping Formula from [groupedHyperframe]
 #' @description
 #' ..
 #' 
-#' @param object a `groupedHyperframe`
+#' @param object a [groupedHyperframe]
 #' @param asList,sep place holders for S3 generic \link[nlme]{getGroupsFormula}
 #' @returns 
 #' Function [getGroupsFormula.groupedHyperframe] returns a one-sided \link[stats]{formula}

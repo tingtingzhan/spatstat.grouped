@@ -20,7 +20,7 @@ aggregate_quantile(X, ...)
 aggregate_kerndens(X, ...)
 }
 \arguments{
-\item{X}{a \link[spatstat.geom]{hyperframe},
+\item{X}{a \link{groupedHyperframe},
 containing either or all of
 \itemize{
 \item {one or more \link[base]{numeric}

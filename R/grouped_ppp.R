@@ -1,7 +1,7 @@
 
 
 
-#' @title Grouped \link[spatstat.geom]{hyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}
+#' @title [groupedHyperframe] with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}
 #' 
 #' @description
 #' ..
@@ -30,7 +30,7 @@
 #' 
 #' 
 #' @returns
-#' Function [grouped_ppp] returns a \link[spatstat.geom]{hyperframe}
+#' Function [grouped_ppp] returns a [groupedHyperframe]
 #' with ***one-and-only-one*** 
 #' \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}.
 #' 

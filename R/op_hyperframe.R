@@ -64,7 +64,7 @@ op_hyperframe <- function(X, op, ...) {
   )
   if (inherits(X, what = 'groupedHyperframe')) {
     attr(ret, which = 'group') <- attr(X, which = 'group', exact = TRUE)
-    class(ret) <- c('groupedHyperframe', class(X))
+    class(ret) <- unique.default(c('groupedHyperframe', class(X)))
   } # a bandage fix, for now
   return(ret)
   

@@ -2,14 +2,14 @@
 % Please edit documentation in R/aggregate_num.R
 \name{aggregate_by_}
 \alias{aggregate_by_}
-\title{Aggregate-By, for \code{groupedHyperframe}}
+\title{Aggregate-By, for \link{groupedHyperframe}}
 \usage{
 aggregate_by_(dots, X, by, f_aggr_ = c("mean", "median", "max", "min"))
 }
 \arguments{
 \item{dots}{a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es}
 
-\item{X}{a \code{groupedHyperframe}}
+\item{X}{a \link{groupedHyperframe}}
 
 \item{by, f_aggr_}{see function \link{aggregate_num}}
 }
@@ -18,7 +18,7 @@ Function \link{aggregate_by_} returns
 a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es.
 }
 \description{
-Aggregate-By, for \code{groupedHyperframe}
+Aggregate-By, for \link{groupedHyperframe}
 }
 \details{
 Function \link{aggregate_by_} checks \code{by} against \code{attr(X,'group')}.

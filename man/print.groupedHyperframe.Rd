@@ -2,12 +2,12 @@
 % Please edit documentation in R/groupedHyperframe.R
 \name{print.groupedHyperframe}
 \alias{print.groupedHyperframe}
-\title{Print \code{groupedHyperframe}}
+\title{Print \link{groupedHyperframe}}
 \usage{
 \method{print}{groupedHyperframe}(x, ...)
 }
 \arguments{
-\item{x}{a \code{groupedHyperframe}}
+\item{x}{a \link{groupedHyperframe}}
 
 \item{...}{additional parameters, currently not in use}
 }
@@ -15,7 +15,7 @@
 Function \link{print.groupedHyperframe} does not have a returned value.
 }
 \description{
-Print \code{groupedHyperframe}
+Print \link{groupedHyperframe}
 }
 \seealso{
 \code{?nlme:::print.groupedData}

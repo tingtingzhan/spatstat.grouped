@@ -5,7 +5,7 @@
 #' Aggregate information in \link[spatstat.explore]{fv.object}s
 #' by sample clustering.
 #' 
-#' @param X a \link[spatstat.geom]{hyperframe}, 
+#' @param X a [groupedHyperframe], 
 #' containing one or more \link[spatstat.explore]{fv.object} column(s)
 #' 
 #' @param by one-sided \link[stats]{formula}, sample clustering.
@@ -29,8 +29,8 @@
 #' 
 #' Note that \link[spatstat.geom]{hyperframe} does not support
 #' \link[base]{matrix}-column (for good reasons!).
-#' Therefore, function [aggregate_fv] must return \link[base]{data.frame}, 
-#' instead of \link[spatstat.geom]{hyperframe}.
+#' Therefore, function [aggregate_fv] must return a \link[base]{data.frame}, 
+#' instead of a \link[spatstat.geom]{hyperframe}.
 #' 
 #' @importFrom matrixStats colMedians colMaxs colMins
 #' @export

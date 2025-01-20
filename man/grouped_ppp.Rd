@@ -2,7 +2,7 @@
 % Please edit documentation in R/grouped_ppp.R
 \name{grouped_ppp}
 \alias{grouped_ppp}
-\title{Grouped \link[spatstat.geom]{hyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}}
+\title{\link{groupedHyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}}
 \usage{
 grouped_ppp(
   formula,
@@ -32,7 +32,7 @@ default is the \eqn{x}- and \eqn{y}-span of \code{coords} in \code{data}.}
 \item{...}{additional parameters, currently not in use}
 }
 \value{
-Function \link{grouped_ppp} returns a \link[spatstat.geom]{hyperframe}
+Function \link{grouped_ppp} returns a \link{groupedHyperframe}
 with \emph{\strong{one-and-only-one}}
 \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}.
 }

@@ -6,7 +6,7 @@
 #' and/or \link[spatstat.geom]{marks}
 #' by sample clustering.
 #' 
-#' @param X a \link[spatstat.geom]{hyperframe}, 
+#' @param X a [groupedHyperframe], 
 #' containing either or all of
 #' \itemize{
 #' \item {one or more \link[base]{numeric} 
@@ -92,11 +92,11 @@ aggregate_num <- function(
 
 
 
-#' @title Aggregate-By, for `groupedHyperframe`
+#' @title Aggregate-By, for [groupedHyperframe]
 #' 
 #' @param dots a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es
 #' 
-#' @param X a `groupedHyperframe`
+#' @param X a [groupedHyperframe]
 #' 
 #' @param by,f_aggr_ see function [aggregate_num]
 #' 
