@@ -91,13 +91,9 @@ grouped_ppp <- function(
     list(ppp_ = ppps),
     as.list.data.frame(dat0)
   ))
-  # ?spatstat.geom::hyperframe turns 'list' to c('ppplist', 'solist', 'anylist', 'listof', 'list')
-  # stopifnot(is.ppplist(hf$ppp_))
-  # stopifnot(!is.ppplist(unclass(hf)$hypercolumns$ppp_)) # how could this happen??
   
   # additional attributes to mimic ?nlme::groupedData
   # also see example 'groupedData's from package datasets
-  
   attr(hf, which = 'group') <- call('~', group) # not carrying `f_ppp`, for now
   # for ?nlme::getGroupsFormula
   
