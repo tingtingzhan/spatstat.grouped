@@ -37,8 +37,7 @@
 #' aggregated information stored in \link[base]{matrix}-columns.
 #' 
 #' @name aggregate_num
-#' @importFrom spatstat.geom is.ppp marks.ppp
-#' @importFrom matrixStats colMedians colMaxs colMins
+#' @importFrom spatstat.geom is.ppplist marks.ppp
 #' @export
 aggregate_num <- function(
     X, 
@@ -60,12 +59,10 @@ aggregate_num <- function(
   hyper_num_ <- if (any(hc_num)) hc[names(which(hc_num))] # else NULL
   
   # 'numeric' 'marks' in 'ppp'-`hypercolumns`
-  hc_ppp <- vapply(hc, FUN = function(x) {
-    all(vapply(x, FUN = is.ppp, FUN.VALUE = NA))
-  }, FUN.VALUE = NA)
-  if (sum(hc_ppp) > 1L) stop('does not allow more than 1 ppp-hypercolumn')
-  if (sum(hc_ppp) == 1L) {
-    mk_ <- lapply(hc[[names(which(hc_ppp))]], FUN = marks.ppp, drop = FALSE)
+  X_ppp <- vapply(X, FUN = is.ppplist, FUN.VALUE = NA)
+  if (sum(X_ppp) > 1L) stop('does not allow more than 1 ppp-hypercolumn')
+  if (sum(X_ppp) == 1L) {
+    mk_ <- lapply(X[[names(which(X_ppp))]], FUN = marks.ppp, drop = FALSE)
     mk <- .mapply(FUN = list, dots = mk_, MoreArgs = NULL)
     names(mk) <- names(mk_[[1L]])
     mk_num <- vapply(mk, FUN = function(x) {
@@ -74,15 +71,11 @@ aggregate_num <- function(
     mark_num_ <- if (any(mk_num)) mk[mk_num] # else NULL
   } else mark_num_ <- NULL
   
-  ret0 <- lapply(c(hyper_num_, mark_num_), FUN = function(x) {
+  x <- c(hyper_num_, mark_num_)
+  names(x) <- paste(names(x), FUN.name, sep = '.')
+  ret0 <- lapply(x, FUN = function(x) {
     do.call(what = rbind, args = lapply(x, FUN = FUN, ...))
   })
-  names(ret0) <- paste(names(ret0), FUN.name, sep = '.')
-  
-  if (any(names(ret0) %in% names(X))) {
-    warning('Existing column(s) overwritten')
-    #warning(sprintf(fmt = 'Existing `%s` column overwritten', nm_iso))
-  }
   
   # Step 2: aggregation
   
@@ -108,6 +101,7 @@ aggregate_num <- function(
 #' a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es.
 #'  
 #' @keywords internal
+#' @importFrom matrixStats colMedians colMaxs colMins
 #' @export
 aggregate_by_ <- function(
     dots, # 
@@ -117,6 +111,8 @@ aggregate_by_ <- function(
 ) {
   
   x <- unclass(X)$df
+  if (any(names(dots) %in% names(x))) warning('Existing column(s) overwritten')
+  
   group <- attr(X, which = 'group', exact = TRUE)
   
   if (!is.symbol(by. <- by[[2L]])) stop('`by` must be a formula and RHS must be a symbol')

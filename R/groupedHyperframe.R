@@ -48,6 +48,10 @@ print.groupedHyperframe <- function(x, ...) {
 
 
 
+
+
+
+
 #' @title Extract Subset of [groupedHyperframe]
 #' 
 #' @param x a [groupedHyperframe]
@@ -61,19 +65,27 @@ print.groupedHyperframe <- function(x, ...) {
 #' @export [.groupedHyperframe
 #' @export
 `[.groupedHyperframe` <- function(x, ...) {
-  
   ret <- `[.hyperframe`(x, ...)
-  
   # a bandage fix hahaha
   group <- attr(x, which = 'group', exact = TRUE)
   if (!all(all.vars(group) %in% names(ret))) return(ret) # just 'hyperframe'
-    
   attr(ret, which = 'group') <- group
   class(ret) <- unique.default(c('groupedHyperframe', class(ret)))
   return(ret)
 }
 
 
+#' @importFrom spatstat.geom subset.hyperframe
+#' @export
+subset.groupedHyperframe <- function(x, ...) {
+  ret <- subset.hyperframe(x, ...)
+  # a bandage fix hahaha
+  group <- attr(x, which = 'group', exact = TRUE)
+  if (!all(all.vars(group) %in% names(ret))) return(ret) # just 'hyperframe'
+  attr(ret, which = 'group') <- group
+  class(ret) <- unique.default(c('groupedHyperframe', class(ret)))
+  return(ret)
+}
 
 
 

@@ -32,7 +32,19 @@
 #' Therefore, function [aggregate_fv] must return a \link[base]{data.frame}, 
 #' instead of a \link[spatstat.geom]{hyperframe}.
 #' 
-#' @importFrom matrixStats colMedians colMaxs colMins
+#' @examples
+#' library(spatstat.data)
+#' library(spatstat.geom)
+#' r = seq.int(from = 0, to = 100, by = 5)
+#' flu_spat = flu |>
+#'  subset(stain == 'M2-M1') |>
+#'  as.groupedHyperframe(group = ~ virustype/frameid) |>
+#'  Gcross_(i = 'M1', j = 'M2', r = r, correction = 'best') |>
+#'  aggregate_fv(by = ~ virustype)
+#' names(flu_spat)
+#' dim(flu_spat$pattern.G.value)
+#' dim(flu_spat$pattern.G.cumarea)
+#' @importFrom spatstat.geom names.hyperframe
 #' @export
 aggregate_fv <- function(
     X, 
@@ -41,25 +53,18 @@ aggregate_fv <- function(
     ...
 ) {
   
-  X0 <- unclass(X) 
-  x <- X0$df # to be returned later
-
-  if (!any(id <- (X0$vclass == 'fv'))) stop('input `X` must contain at least one `fv` column')
-  fv <- as.list.hyperframe(X)[names(X)[id]] # one or more 'fv' column(s)
+  if (!any(id <- (unclass(X)$vclass == 'fv'))) stop('input `X` must contain at least one `fv` column')
   
-  ret0 <- lapply(fv, FUN = function(x) return(list(
-    value = y.fvlist(x), 
-    cumarea = cumtrapz.fvlist(x)
-  )))
+  fv <- as.list.hyperframe(X)[names.hyperframe(X)[id]] # one or more 'fv' column(s)
   
-  ret1 <- unlist(ret0, recursive = FALSE, use.names = TRUE) # smart!!
+  ret0 <- fv |> 
+    lapply(FUN = function(x) return(list(
+      value = y.fvlist(x), 
+      cumarea = cumtrapz.fvlist(x)
+    ))) |>
+    unlist(recursive = FALSE, use.names = TRUE) # smart!!
   
-  if (any(names(ret1) %in% names(x))) {
-    warning('Existing column(s) overwritten')
-    #warning(sprintf(fmt = 'Existing `%s` column overwritten', nm_iso))
-  }
-  
-  aggregate_by_(dots = ret1, X = X, by = by, f_aggr_ = f_aggr_)
+  aggregate_by_(dots = ret0, X = X, by = by, f_aggr_ = f_aggr_)
 
 }
 

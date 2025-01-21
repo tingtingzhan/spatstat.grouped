@@ -38,3 +38,16 @@ instead of a \link[spatstat.geom]{hyperframe}.
 Aggregate information in \link[spatstat.explore]{fv.object}s
 by sample clustering.
 }
+\examples{
+library(spatstat.data)
+library(spatstat.geom)
+r = seq.int(from = 0, to = 100, by = 5)
+flu_spat = flu |>
+ subset(stain == 'M2-M1') |>
+ as.groupedHyperframe(group = ~ virustype/frameid) |>
+ Gcross_(i = 'M1', j = 'M2', r = r, correction = 'best') |>
+ aggregate_fv(by = ~ virustype)
+names(flu_spat)
+dim(flu_spat$pattern.G.value)
+dim(flu_spat$pattern.G.cumarea)
+}

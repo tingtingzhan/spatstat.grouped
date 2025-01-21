@@ -85,12 +85,15 @@ grouped_ppp <- function(
   # `marks<-.ppp` -> `marks(x, drop = FALSE) <- ...` # probably
   # parameter `drop` of ?spatstat.geom::split.ppp has a different meaning
   # I don't want to email Dr. Baddeley, yet
-  ppps <- split_ppp_dataframe(ppp., f = f_ppp)
+  ppps <- split_ppp_dataframe(ppp., f = f_ppp) # only 'list'
   
   hf <- do.call(what = hyperframe, args = c(
     list(ppp_ = ppps),
     as.list.data.frame(dat0)
   ))
+  # ?spatstat.geom::hyperframe turns 'list' to c('ppplist', 'solist', 'anylist', 'listof', 'list')
+  # stopifnot(is.ppplist(hf$ppp_))
+  # stopifnot(!is.ppplist(unclass(hf)$hypercolumns$ppp_)) # how could this happen??
   
   # additional attributes to mimic ?nlme::groupedData
   # also see example 'groupedData's from package datasets
