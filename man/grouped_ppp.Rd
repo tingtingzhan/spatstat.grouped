@@ -45,6 +45,5 @@ with \emph{\strong{one-and-only-one}}
 \examples{
 library(spatstat.grouped.data)
 library(survival) # to help ?spatstat.geom::hyperframe understand ?survival::Surv
-s = grouped_ppp(hladr + phenotype ~ OS + gender + age | patient_id/image_id, data = wrobel_lung)
-head(s)
+grouped_ppp(hladr + phenotype ~ OS + gender + age | patient_id/image_id, data = wrobel_lung)
 }

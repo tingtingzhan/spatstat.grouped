@@ -31,7 +31,8 @@ NULL
 #' 
 #' @seealso `?nlme:::print.groupedData`
 #' 
-#' @importFrom spatstat.geom as.data.frame.hyperframe
+#' @importFrom spatstat.geom as.data.frame.hyperframe as.list.hyperframe
+#' @importFrom cli col_blue
 #' @export print.groupedHyperframe
 #' @export
 print.groupedHyperframe <- function(x, ...) {
@@ -41,6 +42,20 @@ print.groupedHyperframe <- function(x, ...) {
   #  environment(grp) <- globalenv()
   #} # not sure how this is useful in ?nlme:::print.groupedData
   print(grp, ...)
+  
+  g <- all.vars(grp)
+  ns <- vapply(seq_along(g), FUN = function(i) { # (i = 1L)
+    f <- do.call(what = interaction, args = c(
+      as.list.hyperframe(x[j = g[seq_len(i)], drop = FALSE]),
+      list(drop = TRUE, lex.order = TRUE)
+    ))
+    length(levels(f)) # `[` will not mess up - tzh hopes!!!
+  }, FUN.VALUE = NA_integer_)
+  txt <- mapply(FUN = function(n, g) {
+    paste(n, col_blue(g))
+  }, n = ns, g = g, SIMPLIFY = TRUE)
+  cat(rev.default(txt), sep = ' nested in\n')
+  
   cat('\n')
   print(as.data.frame.hyperframe(x, discard = FALSE), ...) # see inside ?spatstat.geom::print.hyperframe
 }
