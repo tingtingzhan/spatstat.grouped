@@ -49,7 +49,7 @@ print.groupedHyperframe <- function(x, ...) {
       as.list.hyperframe(x[j = g[seq_len(i)], drop = FALSE]),
       list(drop = TRUE, lex.order = TRUE)
     ))
-    length(levels(f)) # `[` will not mess up - tzh hopes!!!
+    length(levels(f))
   }, FUN.VALUE = NA_integer_)
   txt <- mapply(FUN = function(n, g) {
     paste(n, col_blue(g))
