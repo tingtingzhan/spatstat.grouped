@@ -38,8 +38,7 @@
 #' library(spatstat.grouped.data)
 #' library(survival) # to help ?spatstat.geom::hyperframe understand ?survival::Surv
 #' grouped_ppp(hladr + phenotype ~ OS + gender + age | patient_id/image_id, data = wrobel_lung)
-#' @importFrom parallel mclapply detectCores
-#' @importFrom spatstat.geom owin ppp hyperframe
+#' @importFrom spatstat.geom owin ppp as.hyperframe.data.frame
 #' @export
 grouped_ppp <- function(
     formula, 
@@ -49,18 +48,9 @@ grouped_ppp <- function(
     ...
 ) {	
   
-  mk <- all.vars(formula[[2L]]) # name clash ?spatstat.geom::marks
+  # Step 1: grouped hyperframe (may consider writing into a function)
   
-  x <- formula[[3L]][[2L]] # patient-level covariates
   group <- formula[[3L]][[3L]]
-  
-  xy_ <- as.list.default(coords[[2L]])
-  if ((xy_[[1L]] != '+') || (length(xy_) != 3L)) stop('Specify x and y coordinates names as ~x+y')
-  if (!is.symbol(x <- xy_[[2L]])) stop('x-coordinates must be a symbol, for now')
-  if (!is.symbol(y <- xy_[[3L]])) stop('y-coordinates must be a symbol, for now')
-  if (anyNA(.x <- data[[x]])) stop('Do not allow missingness in x-coordinates')
-  if (anyNA(.y <- data[[y]])) stop('Do not allow missingness in y-coordinates')
-  
   g <- all.vars(group)
   data[g] <- lapply(data[g], FUN = function(i) {
     if (is.factor(i)) return(factor(i)) # drop empty levels!!
@@ -69,30 +59,27 @@ grouped_ppp <- function(
   
   f_ppp <- interaction(data[g], drop = TRUE, sep = '.', lex.order = TRUE) # one or more hierarchy
 
+  hf <- data[all.vars(formula[[3L]])] |>
+    mcaggregate_unique(f = f_ppp) |>
+    as.hyperframe.data.frame()
+  
+  # Step 2: grouped ppp
+  
+  xy_ <- as.list.default(coords[[2L]])
+  if ((xy_[[1L]] != '+') || (length(xy_) != 3L)) stop('Specify x and y coordinates names as ~x+y')
+  if (!is.symbol(x <- xy_[[2L]])) stop('x-coordinates must be a symbol, for now')
+  if (!is.symbol(y <- xy_[[3L]])) stop('y-coordinates must be a symbol, for now')
+  if (anyNA(.x <- data[[x]])) stop('Do not allow missingness in x-coordinates')
+  if (anyNA(.y <- data[[y]])) stop('Do not allow missingness in y-coordinates')
   force(window)
-  ppp. <- ppp(x = .x, y = .y, window = window, marks = data[mk], checkdup = FALSE, drop = FALSE) |> # `drop = FALSE` important!!!
+  hf$ppp. <- ppp(x = .x, y = .y, window = window, marks = data[all.vars(formula[[2L]])], checkdup = FALSE, drop = FALSE) |> # `drop = FALSE` important!!!
     #log.ppp() |> # if needed
-    split_ppp_dataframe(f = f_ppp) # only 'list'
-  
-  # ?spatstat.geom::split.ppp (which is also slow) 
-  # does not respect col-1 dataframe; need to change
-  # `marks(x)` -> `marks(x, drop = FALSE)`
-  # `marks<-.ppp` -> `marks(x, drop = FALSE) <- ...` # probably
-  # parameter `drop` of ?spatstat.geom::split.ppp has a different meaning
-  # I don't want to email Dr. Baddeley, yet
-  
-  dat0 <- data[all.vars(formula[[3L]])] |>
-    mcaggregate_unique(f = f_ppp)
-  
-  hf <- do.call(what = hyperframe, args = c(
-    list(ppp. = ppp.),
-    as.list.data.frame(dat0)
-  ))
+    split_ppp_dataframe(f = f_ppp)
   
   # additional attributes to mimic ?nlme::groupedData
   # also see example 'groupedData's from package datasets
-  attr(hf, which = 'group') <- call('~', group) # not carrying `f_ppp`, for now
-  # for ?nlme::getGroupsFormula
+  attr(hf, which = 'group') <- call('~', group) # for ?nlme::getGroupsFormula
+  # end of additional attributes
   
   class(hf) <- unique.default(c('groupedHyperframe', class(hf)))
   return(hf)
@@ -128,6 +115,7 @@ split_ppp_dataframe <- function(x, f) {
 
 # ?stats::aggregate.data.frame is not parallel computing
 # ?collapse::collap does not support 'Surv' column
+#' @importFrom parallel mclapply detectCores
 mcaggregate_unique <- function(data, f) {
   
   nr <- .row_names_info(data, type = 2L)
@@ -156,9 +144,3 @@ mcaggregate_unique <- function(data, f) {
 
 }
 
-
-
-
-
-
-clusterppp <- function(...) .Defunct(new = 'grouped_ppp')

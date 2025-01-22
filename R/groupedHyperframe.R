@@ -54,8 +54,8 @@ print.groupedHyperframe <- function(x, ...) {
   txt <- mapply(FUN = function(n, g) {
     paste(n, col_blue(g))
   }, n = ns, g = g, SIMPLIFY = TRUE)
+  cat('\n')
   cat(rev.default(txt), sep = ' nested in\n')
-  
   cat('\n')
   print(as.data.frame.hyperframe(x, discard = FALSE), ...) # see inside ?spatstat.geom::print.hyperframe
 }
