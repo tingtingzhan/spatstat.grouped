@@ -61,33 +61,31 @@ grouped_ppp <- function(
   if (anyNA(.x <- data[[x]])) stop('Do not allow missingness in x-coordinates')
   if (anyNA(.y <- data[[y]])) stop('Do not allow missingness in y-coordinates')
   
-  v_group <- all.vars(group)
-  data[v_group] <- lapply(data[v_group], FUN = function(i) {
+  g <- all.vars(group)
+  data[g] <- lapply(data[g], FUN = function(i) {
     if (is.factor(i)) return(factor(i)) # drop empty levels!!
     factor(i, levels = unique(i))
   }) 
   
+  f_ppp <- interaction(data[g], drop = TRUE, sep = '.', lex.order = TRUE) # one or more hierarchy
+
   force(window)
-  ppp. <- ppp(x = .x, y = .y, window = window, marks = data[mk], checkdup = FALSE, drop = FALSE)
-  # stopifnot(markformat.ppp(ppp.) == 'dataframe') # because I used `drop = FALSE`
-  if (FALSE) ppp. <- log.ppp(ppp.) # if needed
+  ppp. <- ppp(x = .x, y = .y, window = window, marks = data[mk], checkdup = FALSE, drop = FALSE) |> # `drop = FALSE` important!!!
+    #log.ppp() |> # if needed
+    split_ppp_dataframe(f = f_ppp) # only 'list'
   
-  f_ppp <- if (is.symbol(group)) { # 1-level
-    data[[group]] # 'factor'
-  } else interaction(data[all.vars(group)], drop = TRUE, sep = '.', lex.order = TRUE)
-  
-  dat0 <- .data_unique(data = data[all.vars(formula[[3L]])], f = f_ppp)
-  
-  #ppps <- split.ppp(ppp., f = f_ppp) # slow!
-  # ?spatstat.geom::split.ppp does not respect col-1 dataframe; need to change
+  # ?spatstat.geom::split.ppp (which is also slow) 
+  # does not respect col-1 dataframe; need to change
   # `marks(x)` -> `marks(x, drop = FALSE)`
   # `marks<-.ppp` -> `marks(x, drop = FALSE) <- ...` # probably
   # parameter `drop` of ?spatstat.geom::split.ppp has a different meaning
   # I don't want to email Dr. Baddeley, yet
-  ppps <- split_ppp_dataframe(ppp., f = f_ppp) # only 'list'
+  
+  dat0 <- data[all.vars(formula[[3L]])] |>
+    mcaggregate_unique(f = f_ppp)
   
   hf <- do.call(what = hyperframe, args = c(
-    list(ppp_ = ppps),
+    list(ppp. = ppp.),
     as.list.data.frame(dat0)
   ))
   
@@ -128,29 +126,25 @@ split_ppp_dataframe <- function(x, f) {
 
 
 
-
-
-.data_unique <- function(data, f) {
+# ?stats::aggregate.data.frame is not parallel computing
+# ?collapse::collap does not support 'Surv' column
+mcaggregate_unique <- function(data, f) {
   
   nr <- .row_names_info(data, type = 2L)
   if (nr != length(f)) stop('`data` and `f` different length')
   
   ids <- split.default(seq_len(nr), f = f)
   
-  is_same_by_f <- vapply(data, FUN = function(d) { # (d = data[[1L]])
+  .ident <- vapply(data, FUN = function(d) { # (d = data[[1L]])
     tmp <- mclapply(ids, mc.cores = switch(.Platform$OS.type, windows = 1L, detectCores()), FUN = function(id) {
-      is_same <- all(duplicated(unclass(d[id]))[-1L])
-      #if (!is_same) {
-      #  print(d[id])
-      #  stop('not unique')
-      #}
-      return(is_same)
+    #tmp <- lapply(ids, FUN = function(id) {
+      all(duplicated(unclass(d[id]))[-1L])
     })
     return(all(unlist(tmp)))
   }, FUN.VALUE = NA)
   
-  if (any(!is_same_by_f)) {
-    nm <- names(data)[!is_same_by_f]
+  if (any(!.ident)) {
+    nm <- names(data)[!.ident]
     message('Column(s) ', sQuote(nm), ' not identical per aggregation-cluster; thus removed')
     data[nm] <- NULL
   }

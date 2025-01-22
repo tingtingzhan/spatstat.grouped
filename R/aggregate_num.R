@@ -133,7 +133,7 @@ aggregate_by_ <- function(
     
   } else {
     
-    x <- .data_unique(data = x, f = f)
+    x <- mcaggregate_unique(data = x, f = f)
     fn <- switch(match.arg(f_aggr_), mean = colMeans, median = colMedians, max = colMaxs, min = colMins)
     x[names(dots)] <- lapply(dots, FUN = function(m) {
       do.call(what = rbind, args = lapply(ids, FUN = function(i) fn(m[i,,drop = FALSE])))
