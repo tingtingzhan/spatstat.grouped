@@ -167,7 +167,7 @@ aggregate_quantile <- function(X, ...) aggregate_num(X, FUN = .quantile_num_name
 .quantile_num_name <- function(x, probs, ...) {
   qs <- quantile(x, probs, ...)
   # see last few rows of ?stats:::quantile.default
-  names(qs) <- probs
+  names(qs) <- probs # numerical-name
   return(qs)
 }
 

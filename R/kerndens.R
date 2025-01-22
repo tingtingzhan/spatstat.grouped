@@ -16,9 +16,14 @@
 #' Function [kerndens] returns
 #' a \link[base]{numeric} \link[base]{vector}.
 #' 
+#' @note
+#' TZhan does not think any function from package \CRANpkg{spatstat.univar}
+#' has the same functionality. She could be wrong.
+#' 
 #' @examples
 #' d = density(faithful$eruptions, bw = 'sj')
 #' stopifnot(identical(d$y, kerndens(faithful$eruptions, bw = 'sj')))
+#' @keywords internal
 #' @importFrom stats density.default
 #' @export
 kerndens <- function(...) density.default(...)$y
