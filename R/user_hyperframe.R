@@ -1,19 +1,24 @@
 
 
-# badly written functions...
-# ?spatstat.explore::markcorr does not use other fv-functions (??)
-# ?spatstat.explore::Emark uses ?spatstat.explore::markcorr
-# ?spatstat.explore::markvario uses ?spatstat.explore::markcorr
-# ?spatstat.explore::Vmark uses ?spatstat.explore::Emark and ?spatstat.explore::markcorr
-# Tingting does not want to re-write these functions though..
-# .. would be a headache to catch up the authors updates
-
 #' @title User Interface of Operations on \link[spatstat.geom]{hyperframe} with One-and-Only-One \link[spatstat.geom]{ppp}-\link[spatstat.geom:hyperframe]{hypercolumn}
 #' 
 #' @description
 #' See workhorse functions [fv_hyperframe] and [dist_hyperframe].
 #' 
 #' @param X a \link[spatstat.geom]{hyperframe}
+#' 
+#' @param correction \link[base]{character} scalar,
+#' see functions 
+#' \link[spatstat.explore]{Emark},
+#' \link[spatstat.explore]{Vmark},
+#' \link[spatstat.explore]{markcorr},
+#' \link[spatstat.explore]{markvario}
+#' \link[spatstat.explore]{Gcross},
+#' \link[spatstat.explore]{Jcross}
+#' \link[spatstat.explore]{Kcross}, 
+#' \link[spatstat.explore]{Lcross},
+#' etc.
+#' Default `'none'` to save computing time.
 #' 
 #' @param ... additional parameters of user operation
 #' 
@@ -39,7 +44,7 @@ Emark_ <- function(X, ...) UseMethod(generic = 'Emark_')
 #' @importFrom spatstat.explore Emark
 #' @export Emark_.hyperframe
 #' @export
-Emark_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Emark, ...)
+Emark_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Emark, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -49,7 +54,7 @@ Vmark_ <- function(X, ...) UseMethod(generic = 'Vmark_')
 #' @importFrom spatstat.explore Vmark
 #' @export Vmark_.hyperframe
 #' @export
-Vmark_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Vmark, ...)
+Vmark_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Vmark, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -58,7 +63,7 @@ markcorr_ <- function(X, ...) UseMethod(generic = 'markcorr_')
 #' @importFrom spatstat.explore markcorr
 #' @export markcorr_.hyperframe
 #' @export
-markcorr_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = markcorr, ...)
+markcorr_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = markcorr, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -67,7 +72,7 @@ markvario_ <- function(X, ...) UseMethod(generic = 'markvario_')
 #' @importFrom spatstat.explore markvario
 #' @export markvario_.hyperframe
 #' @export
-markvario_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = markvario, ...)
+markvario_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = markvario, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -76,7 +81,7 @@ Gcross_ <- function(X, ...) UseMethod(generic = 'Gcross_')
 #' @importFrom spatstat.explore Gcross
 #' @export Gcross_.hyperframe
 #' @export
-Gcross_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Gcross, ...)
+Gcross_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Gcross, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -85,7 +90,7 @@ Jcross_ <- function(X, ...) UseMethod(generic = 'Jcross_')
 #' @importFrom spatstat.explore Jcross
 #' @export Jcross_.hyperframe
 #' @export
-Jcross_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Jcross, ...)
+Jcross_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Jcross, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -94,7 +99,7 @@ Kcross_ <- function(X, ...) UseMethod(generic = 'Kcross_')
 #' @importFrom spatstat.explore Kcross
 #' @export Kcross_.hyperframe
 #' @export
-Kcross_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Kcross, ...)
+Kcross_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Kcross, correction = correction, ...)
 
 #' @rdname user_hyperframe
 #' @export
@@ -103,7 +108,7 @@ Lcross_ <- function(X, ...) UseMethod(generic = 'Lcross_')
 #' @importFrom spatstat.explore Lcross
 #' @export Lcross_.hyperframe
 #' @export
-Lcross_.hyperframe <- function(X, ...) fv_hyperframe(X, fn = Lcross, ...)
+Lcross_.hyperframe <- function(X, correction = 'none', ...) fv_hyperframe(X, fn = Lcross, correction = correction, ...)
 
 # Inside \link[spatstat.explore]{Gcross} and \link[spatstat.explore]{Kcross}
 # @param i type of the points *from* which distances are measured,

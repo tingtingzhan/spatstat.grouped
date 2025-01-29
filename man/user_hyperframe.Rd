@@ -23,35 +23,35 @@
 \usage{
 Emark_(X, ...)
 
-\method{Emark_}{hyperframe}(X, ...)
+\method{Emark_}{hyperframe}(X, correction = "none", ...)
 
 Vmark_(X, ...)
 
-\method{Vmark_}{hyperframe}(X, ...)
+\method{Vmark_}{hyperframe}(X, correction = "none", ...)
 
 markcorr_(X, ...)
 
-\method{markcorr_}{hyperframe}(X, ...)
+\method{markcorr_}{hyperframe}(X, correction = "none", ...)
 
 markvario_(X, ...)
 
-\method{markvario_}{hyperframe}(X, ...)
+\method{markvario_}{hyperframe}(X, correction = "none", ...)
 
 Gcross_(X, ...)
 
-\method{Gcross_}{hyperframe}(X, ...)
+\method{Gcross_}{hyperframe}(X, correction = "none", ...)
 
 Jcross_(X, ...)
 
-\method{Jcross_}{hyperframe}(X, ...)
+\method{Jcross_}{hyperframe}(X, correction = "none", ...)
 
 Kcross_(X, ...)
 
-\method{Kcross_}{hyperframe}(X, ...)
+\method{Kcross_}{hyperframe}(X, correction = "none", ...)
 
 Lcross_(X, ...)
 
-\method{Lcross_}{hyperframe}(X, ...)
+\method{Lcross_}{hyperframe}(X, correction = "none", ...)
 
 \method{nncross_}{hyperframe}(X, ...)
 }
@@ -59,6 +59,19 @@ Lcross_(X, ...)
 \item{X}{a \link[spatstat.geom]{hyperframe}}
 
 \item{...}{additional parameters of user operation}
+
+\item{correction}{\link[base]{character} scalar,
+see functions
+\link[spatstat.explore]{Emark},
+\link[spatstat.explore]{Vmark},
+\link[spatstat.explore]{markcorr},
+\link[spatstat.explore]{markvario}
+\link[spatstat.explore]{Gcross},
+\link[spatstat.explore]{Jcross}
+\link[spatstat.explore]{Kcross},
+\link[spatstat.explore]{Lcross},
+etc.
+Default \code{'none'} to save computing time.}
 }
 \value{
 See explanations in workhorse functions \link{fv_hyperframe} and \link{dist_hyperframe}.

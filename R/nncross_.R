@@ -47,7 +47,7 @@
 nncross_ <- function(X, ...) UseMethod(generic = 'nncross_')
 
 #' @rdname nncross_
-#' @importFrom spatstat.geom nncross is.marked.ppp is.multitype.ppp marks.ppp split.ppp
+#' @importFrom spatstat.geom nncross.ppp is.marked.ppp is.multitype.ppp marks.ppp split.ppp
 #' @export nncross_.ppp
 #' @export
 nncross_.ppp <- function(X, i, j, ...) {
@@ -62,12 +62,8 @@ nncross_.ppp <- function(X, i, j, ...) {
   if (!length(i_ <- x_[[i]])) return(invisible())
   if (!length(j_ <- x_[[j]])) return(invisible())
   
-  return(nncross(X = i_, Y = j_, what = 'dist', ...)) # invokes ?spatstat.geom::`[.ppp`
-  # ?spatstat.geom::nncross returns 
-  # a \link[base]{data.frame} if `what = c('dist', 'which')`
-  # a \link[base]{numeric} \link[base]{vector} if `what = 'dist'` or `what = 'which'`
+  return(nncross.ppp(X = i_, Y = j_, what = 'dist', ...))
   
-  # very simple programing!!  let err!!!
 }
 
 
