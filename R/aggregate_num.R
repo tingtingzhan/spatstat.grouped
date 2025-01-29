@@ -101,6 +101,7 @@ aggregate_num <- function(
 #' a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es.
 #'  
 #' @keywords internal
+#' @importFrom cli col_cyan
 #' @importFrom matrixStats colMedians colMaxs colMins
 #' @export
 aggregate_by_ <- function(
@@ -115,7 +116,12 @@ aggregate_by_ <- function(
   
   group <- attr(X, which = 'group', exact = TRUE)
   
-  if (!is.symbol(by. <- by[[2L]])) stop('`by` must be a formula and RHS must be a symbol')
+  if (!is.call(by) || by[[1L]] != '~' || length(by) != 2L) stop('`by` must be one-sided formula')
+  if (!is.symbol(by. <- by[[2L]])) {
+    new_by <- vapply(all.vars(by.), FUN = function(x) deparse1(call(name = '~', as.symbol(x))), FUN.VALUE = '')
+    message(col_cyan('Instead of ', sQuote(deparse1(by)), ', use either one of ', paste(sQuote(new_by), collapse = ', '), '.'))
+    stop('`by` must be a formula and right-hand-side must be a symbol')
+  }
   # `group` 'up-to' `by.`
   # how to do it beautifully?
   # below is an ugly bandage fix

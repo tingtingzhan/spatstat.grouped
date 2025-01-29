@@ -115,6 +115,7 @@ split_ppp_dataframe <- function(x, f) {
 
 # ?stats::aggregate.data.frame is not parallel computing
 # ?collapse::collap does not support 'Surv' column
+#' @importFrom cli col_blue
 #' @importFrom parallel mclapply detectCores
 mcaggregate_unique <- function(data, f) {
   
@@ -133,7 +134,9 @@ mcaggregate_unique <- function(data, f) {
   
   if (any(!.ident)) {
     nm <- names(data)[!.ident]
-    message('Column(s) ', sQuote(nm), ' not identical per aggregation-cluster; thus removed')
+    message(col_blue(
+      'Column(s) ', paste(sQuote(nm), collapse = ', '), 
+      ' removed; as they are not identical per aggregation-group'))
     data[nm] <- NULL
   }
 
