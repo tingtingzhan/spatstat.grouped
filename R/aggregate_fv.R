@@ -57,11 +57,13 @@ aggregate_fv <- function(
   
   fv <- as.list.hyperframe(X)[names.hyperframe(X)[id]] # one or more 'fv' column(s)
   
+  f. <- function(x) return(list(
+    value = y.fvlist(x), 
+    cumarea = cumtrapz.fvlist(x)
+  ))
+  
   ret0 <- fv |> 
-    lapply(FUN = function(x) return(list(
-      value = y.fvlist(x), 
-      cumarea = cumtrapz.fvlist(x)
-    ))) |>
+    lapply(FUN = f.) |>
     unlist(recursive = FALSE, use.names = TRUE) # smart!!
   
   aggregate_by_(dots = ret0, X = X, by = by, f_aggr_ = f_aggr_)

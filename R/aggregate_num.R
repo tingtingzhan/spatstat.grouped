@@ -119,7 +119,7 @@ aggregate_by_ <- function(
   if (!is.call(by) || by[[1L]] != '~' || length(by) != 2L) stop('`by` must be one-sided formula')
   if (!is.symbol(by. <- by[[2L]])) {
     new_by <- vapply(all.vars(by.), FUN = function(x) deparse1(call(name = '~', as.symbol(x))), FUN.VALUE = '')
-    message(col_cyan('Instead of ', sQuote(deparse1(by)), ', use either one of ', paste(sQuote(new_by), collapse = ', '), '.'))
+    message(col_cyan('For parameter `by`, a grouped structure ', sQuote(deparse1(by)), ' is not allowed, please use either one of ', paste(sQuote(new_by), collapse = ', '), '.'))
     stop('`by` must be a formula and right-hand-side must be a symbol')
   }
   # `group` 'up-to' `by.`
@@ -135,6 +135,10 @@ aggregate_by_ <- function(
   
   if (all(lengths(ids) == 1L)) {
     # no need to aggregate
+    
+    # passing of `f_aggr_` is hard coded, because I need `...` in [aggregate_num]
+    # if (!missing(f_aggr_)) warning('aggregation on lowest cluster; parameter `f_aggr_` ignored')
+    
     x[names(dots)] <- dots # done!
     
   } else {
@@ -146,6 +150,13 @@ aggregate_by_ <- function(
     })
     
   }
+  
+  if (id > 1L) {
+    warning('tzh\'s next game: make this output an nlme::groupedData')
+    #group_ret <- str2lang(paste(g[seq_len(id)], collapse = '/'))
+    #fom <- eval(call('~', quote(.), call('|', quote(.), group_ret)))
+    #nlme::groupedData(formula = fom, data = x) # um, I need to know more about ?nlme::groupedData
+  } # else: aggregated by highest cluster, returns 'data.frame'
   
   return(x)
   
