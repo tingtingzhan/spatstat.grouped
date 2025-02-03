@@ -6,12 +6,14 @@
 \alias{cumtrapz.fvlist}
 \title{Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s}
 \usage{
-y.fvlist(X, ...)
+y.fvlist(X, check = TRUE, ...)
 
-cumtrapz.fvlist(X, ...)
+cumtrapz.fvlist(X, check = TRUE, ...)
 }
 \arguments{
 \item{X}{a \link[base]{list} of \link[spatstat.explore]{fv.object}s}
+
+\item{check}{\link[base]{logical} scalar}
 
 \item{...}{additional parameters, currently not in use}
 }

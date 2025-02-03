@@ -1,8 +1,21 @@
 
 
+check_fvlist <- function(X, ...) {
+  
+  x <- lapply(X, FUN = `[[`, 1L)
+  if (!all(duplicated.default(x)[-1L])) stop('x-axis of all fv.objects are not the same')
+  fname <- lapply(X, FUN = attr, which = 'fname', exact = TRUE)
+  if (!all(duplicated.default(fname)[-1L])) stop('fname of all fv.objects are not the same')
+  
+}
+
+
+
 #' @title Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s
 #' 
 #' @param X a \link[base]{list} of \link[spatstat.explore]{fv.object}s
+#' 
+#' @param check \link[base]{logical} scalar
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
@@ -15,16 +28,10 @@
 #' 
 #' @name fvlist
 #' @export
-y.fvlist <- function(X, ...) {
-  id_error <- vapply(X, FUN = inherits, what = 'error', FUN.VALUE = NA)
-  if (all(id_error)) stop('do not allow')
-  X0 <- X[!id_error]
+y.fvlist <- function(X, check = TRUE, ...) {
   
-  x <- lapply(X0, FUN = `[[`, 1L)
-  if (!all(duplicated.default(x)[-1L])) stop('x-axis of all fv.objects are not the same')
-  fname <- lapply(X, FUN = attr, which = 'fname', exact = TRUE)
-  if (!all(duplicated.default(fname)[-1L])) stop('fname of all fv.objects are not the same')
-  
+  if (check) check_fvlist(X, ...)
+
   # if (any(!is.finite.fv(X[[1L]])))
   # needs to check infinite status being same accross all `X`.
   # then, should we
@@ -32,11 +39,14 @@ y.fvlist <- function(X, ...) {
   # .. simply let `ret[is.infinite(ret)] <- NA_real_`
   # ????
   
-  tmp <- replicate(n = length(X), expr = NA_real_, simplify = FALSE)
-  tmp[!id_error] <- lapply(X0, FUN = `[[`, ynm.fv(X[[1L]]))
-  ret <- do.call(rbind, args = tmp)
-  colnames(ret) <- x[[1L]]
-  return(ret)
+  r <- X[[1L]][[1L]]
+  
+  ret <- lapply(X, FUN = `[[`, ynm.fv(X[[1L]])) |>
+    unlist(use.names = FALSE)
+  dim(ret) <- c(length(r), length(X))
+  dimnames(ret) <- list(r, NULL)
+  return(t.default(ret))
+  
 }
 
 
@@ -48,23 +58,23 @@ y.fvlist <- function(X, ...) {
 #' 
 #' @importFrom parallel mclapply detectCores
 #' @export
-cumtrapz.fvlist <- function(X, ...) {
-  id_error <- vapply(X, FUN = inherits, what = 'error', FUN.VALUE = NA)
-  if (all(id_error)) stop('do not allow')
-  X0 <- X[!id_error]
-  x <- lapply(X0, FUN = `[[`, 1L)
-  if (!all(duplicated.default(x)[-1L])) stop('x-axis of all fv.objects are not the same')
+cumtrapz.fvlist <- function(X, check = TRUE, ...) {
+  
+  if (check) check_fvlist(X, ...)
   
   # same question:
   # how to deal with infinite.fv ?
   # here we have to `X[[i]][is.finite.fv(X[[i]])]`
   # because NA_real_ will not help with pracma::trapz
   
-  tmp <- replicate(n = length(X), expr = NA_real_, simplify = FALSE)
-  tmp[!id_error] <- mclapply(X0, mc.cores = switch(.Platform$OS.type, windows = 1L, detectCores()), FUN = cumtrapz.fv, ...)
-  ret <- do.call(rbind, args = tmp)
-  colnames(ret) <- x[[1L]][-1L]
-  return(ret)
+  r <- X[[1L]][[1L]][-1L]
+  
+  ret <- mclapply(X = X, mc.cores = switch(.Platform$OS.type, windows = 1L, detectCores()), FUN = cumtrapz.fv, ...) |>
+      unlist(use.names = FALSE)
+  dim(ret) <- c(length(r), length(X))
+  dimnames(ret) <- list(r, NULL)
+  return(t.default(ret))
+
 }
 
 
