@@ -39,6 +39,7 @@ is.finite.fv <- function(x) {
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
+#' @keywords internal
 #' @name op_fv
 NULL
 
@@ -153,7 +154,6 @@ key1.fv <- function(X, ...) {
 #' plot(x <- roc.ppp(swedishpines, covariate = 'x'))
 #' trapz.fv(x)
 #' tail(cumtrapz.fv(x))
-#' @keywords internal
 #' @importFrom pracma trapz
 #' @export
 trapz.fv <- function(X, ...) {
