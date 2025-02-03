@@ -24,7 +24,7 @@
 #' @export is.finite.fv
 #' @export
 is.finite.fv <- function(x) {
-  is.finite(x[[ynm.fv(x)]])
+  is.finite(x[[key1.fv(x)]])
 }
 
 
@@ -46,50 +46,35 @@ NULL
 #' @rdname op_fv
 #' 
 #' @details
-#' Function [ynm.fv] finds the name of primary outcome,
+#' Function [key1.fv] finds the name of primary outcome,
 #' i.e., the *black solid curve* as shown in \link[spatstat.explore]{plot.fv},
 #' of an \link[spatstat.explore]{fv.object}.
 #' 
 #' @returns
-#' Function [ynm.fv] returns a \link[base]{character} scalar.
-#' Specifically,
-#' \describe{
-#' \item{`'iso'`}{for \link[spatstat.explore]{fv.object} returned from functions 
-#' \link[spatstat.explore]{Emark},
-#' \link[spatstat.explore]{Vmark},
-#' \link[spatstat.explore]{markcorr},
-#' \link[spatstat.explore]{markvario},
-#' \link[spatstat.explore]{Kcross},
-#' \link[spatstat.explore]{Kest},
-#' \link[spatstat.explore]{Lcross}
-#' }
-#' \item{`'km'`}{for \link[spatstat.explore]{fv.object} returned from functions 
-#' \link[spatstat.explore]{Gcross},
-#' \link[spatstat.explore]{Jcross}
-#' }
-#' \item{`'fobs'`}{for \link[spatstat.explore]{fv.object} returned from function \link[spatstat.explore]{roc.ppp}}
-#' }
+#' Function [key1.fv] returns a \link[base]{character} scalar.
 #' 
+#' @importFrom grDevices dev.off png
+#' @importFrom spatstat.explore plot.fv
 #' @export
-ynm.fv <- function(X, ...) {
-  fname1 <- attr(X, which = 'fname', exact = TRUE)[1L]
-  switch(EXPR = fname1, roc = { # from ?spatstat.explore::roc.ppp
-    'fobs'
-  }, 
-  E =, # from ?spatstat.explore::Emark
-  g =, # from ?spatstat.explore::pcfcross
-  gamma =, # from ?spatstat.explore::markvario
-  k =, # from ?spatstat.explore::markcorr
-  K =, # from ?spatstat.explore::Kcross and ?spatstat.explore::Kest
-  L =, # from ?spatstat.explore::Lcross
-  p =, # from ?spatstat.explore::markconnect
-  V = { # from ?spatstat.explore::Vmark
-    'iso'
-  }, 
-  G =, # from ?spatstat.explore::Gcross
-  J = { # from ?spatstat.explore::Jcross
-    'km'
-  }) 
+key1.fv <- function(X, ...) {
+  
+  # unlike ?graphics::barplot.default, ?graphics::boxplot.default, or ?graphics::hist.default
+  # ?spatstat.explore::plot.fv 
+  # a). does *not* have a parameter `plot` to suppress the plot
+  # b). passes `...` to ?graphics::plot.default, which does *not* have an option to suppress plot
+  
+  f. <- tempfile(fileext = '.png')
+  png(filename = f.)
+  d <- plot.fv(X) # 'data.frame'
+  dev.off()
+  file.remove(f.)
+  
+  # opening/closing a device, then creating a plot, in batch process is extremely slow
+  # tzh is writing to Dr. Baddeley
+  
+  key <- with(d, expr = key[lty == 1L])
+  return(key)
+  
 }
 
 
@@ -105,7 +90,7 @@ ynm.fv <- function(X, ...) {
 #' Functions [trapz.fv] and [cumtrapz.fv] 
 #' obtain the (cumulative) 
 #' \link[pracma]{trapz}oidal integration of 
-#' the area under the ***black solid curve*** (see function [ynm.fv]) 
+#' the area under the ***black solid curve*** (see function [key1.fv]) 
 #' of a function value \link[spatstat.explore]{fv.object}.
 #' 
 #' @returns
@@ -118,7 +103,7 @@ ynm.fv <- function(X, ...) {
 #' 
 #' # numeric mark
 #' plot(x <- Emark(spruces))
-#' ynm.fv(x)
+#' key1.fv(x)
 #' trapz.fv(x)
 #' tail(cumtrapz.fv(x))
 #' 
@@ -137,7 +122,7 @@ ynm.fv <- function(X, ...) {
 #' # multitype
 #' (btc = subset.ppp(betacells, select = 'type'))
 #' plot(x <- Gcross(btc, i = 'off', j = 'on'))
-#' ynm.fv(x)
+#' key1.fv(x)
 #' trapz.fv(x)
 #' tail(cumtrapz.fv(x))
 #' 
@@ -173,11 +158,7 @@ ynm.fv <- function(X, ...) {
 #' @export
 trapz.fv <- function(X, ...) {
   X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
-  #fname1 <- attr(X, which = 'fname', exact = TRUE)[1L]
-  #xnm <- switch(fname1, roc = 'p', 'r')
-  # `X[[1L]]` is (presumably) x-axis variable
-  #return(trapz(x = X[[xnm]], y = X[[ynm.fv(X)]]))
-  return(trapz(x = X[[1L]], y = X[[ynm.fv(X)]]))
+  return(trapz(x = X[[1L]], y = X[[key1.fv(X)]]))
 }
 
 
@@ -201,20 +182,10 @@ cumtrapz.fv <- function(X, ...) {
   # needed! Otherwise ?pracma::cumtrapz errs
 
   # a trapz needs two points
-  # therefore `X[[1L]][-1L]`
-  ret0 <- cumtrapz(x = X[[1L]], y = X[[ynm.fv(X)]])
-  ret <- c(ret0[-1L])
+  # therefore `[-1L]`
+  ret <- c(cumtrapz(x = X[[1L]], y = X[[key1.fv(X)]])[-1L])
   names(ret) <- X[[1L]][-1L]
   return(ret)
-  
-  # ?spatstat.explore::`[.fv` too slow!
-  #fv. <- lapply(X[[1L]][-1L], FUN = function(i) { # (i = X[[1L]][-1L][1L])
-  #  # to invoke ?spatstat.explore::`[.fv`
-  #  eval(call(name = '[', quote(X), call(name = '<=', quote(X[[1L]]), i)))
-  #}) # a 'list' of 'fv'
-  #ret <- vapply(fv., FUN = trapz.fv, FUN.VALUE = NA_real_)
-  #names(ret) <- X[[1L]][-1L]
-  #return(ret)
   
 }
 

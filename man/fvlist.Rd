@@ -24,7 +24,7 @@ All functions return a \link[base]{double} \link[base]{matrix}.
 Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s
 }
 \details{
-Function \link{y.fvlist} gathers the primary outcome (via \link{ynm.fv})
+Function \link{y.fvlist} gathers the primary outcome (via \link{key1.fv})
 of the \link[spatstat.explore]{fv.object}s.
 
 Function \link{cumtrapz.fvlist} is a batch process of function \link{cumtrapz.fv}.

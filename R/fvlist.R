@@ -4,8 +4,11 @@ check_fvlist <- function(X, ...) {
   
   x <- lapply(X, FUN = `[[`, 1L)
   if (!all(duplicated.default(x)[-1L])) stop('x-axis of all fv.objects are not the same')
+  
   fname <- lapply(X, FUN = attr, which = 'fname', exact = TRUE)
   if (!all(duplicated.default(fname)[-1L])) stop('fname of all fv.objects are not the same')
+  
+  # I do not require [key1.fv] to be the same!!!!
   
 }
 
@@ -20,7 +23,7 @@ check_fvlist <- function(X, ...) {
 #' @param ... additional parameters, currently not in use
 #' 
 #' @details
-#' Function [y.fvlist] gathers the primary outcome (via [ynm.fv])
+#' Function [y.fvlist] gathers the primary outcome (via [key1.fv])
 #' of the \link[spatstat.explore]{fv.object}s.
 #' 
 #' @returns
@@ -41,7 +44,8 @@ y.fvlist <- function(X, check = TRUE, ...) {
   
   r <- X[[1L]][[1L]]
   
-  ret <- lapply(X, FUN = `[[`, ynm.fv(X[[1L]])) |>
+  # ret <- lapply(X, FUN = function(x) x[[key1.fv(x)]]) # correct, but extremely slow
+  ret <- lapply(X, FUN = `[[`, key1.fv(X[[1L]])) |> # wrong, but fasts
     unlist(use.names = FALSE)
   dim(ret) <- c(length(r), length(X))
   dimnames(ret) <- list(r, NULL)

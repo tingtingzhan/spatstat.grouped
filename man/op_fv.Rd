@@ -2,12 +2,12 @@
 % Please edit documentation in R/fv_S3.R
 \name{op_fv}
 \alias{op_fv}
-\alias{ynm.fv}
+\alias{key1.fv}
 \alias{trapz.fv}
 \alias{cumtrapz.fv}
 \title{Operations on \link[spatstat.explore]{fv.object}}
 \usage{
-ynm.fv(X, ...)
+key1.fv(X, ...)
 
 trapz.fv(X, ...)
 
@@ -19,24 +19,7 @@ cumtrapz.fv(X, ...)
 \item{...}{additional parameters, currently not in use}
 }
 \value{
-Function \link{ynm.fv} returns a \link[base]{character} scalar.
-Specifically,
-\describe{
-\item{\code{'iso'}}{for \link[spatstat.explore]{fv.object} returned from functions
-\link[spatstat.explore]{Emark},
-\link[spatstat.explore]{Vmark},
-\link[spatstat.explore]{markcorr},
-\link[spatstat.explore]{markvario},
-\link[spatstat.explore]{Kcross},
-\link[spatstat.explore]{Kest},
-\link[spatstat.explore]{Lcross}
-}
-\item{\code{'km'}}{for \link[spatstat.explore]{fv.object} returned from functions
-\link[spatstat.explore]{Gcross},
-\link[spatstat.explore]{Jcross}
-}
-\item{\code{'fobs'}}{for \link[spatstat.explore]{fv.object} returned from function \link[spatstat.explore]{roc.ppp}}
-}
+Function \link{key1.fv} returns a \link[base]{character} scalar.
 
 Function \link{trapz.fv} returns a \link[base]{numeric} scalar.
 
@@ -46,14 +29,14 @@ Function \link{cumtrapz.fv} returns a \link[base]{numeric} \link[base]{vector}.
 Various operations on a function value \link[spatstat.explore]{fv.object}.
 }
 \details{
-Function \link{ynm.fv} finds the name of primary outcome,
+Function \link{key1.fv} finds the name of primary outcome,
 i.e., the \emph{black solid curve} as shown in \link[spatstat.explore]{plot.fv},
 of an \link[spatstat.explore]{fv.object}.
 
 Functions \link{trapz.fv} and \link{cumtrapz.fv}
 obtain the (cumulative)
 \link[pracma]{trapz}oidal integration of
-the area under the \emph{\strong{black solid curve}} (see function \link{ynm.fv})
+the area under the \emph{\strong{black solid curve}} (see function \link{key1.fv})
 of a function value \link[spatstat.explore]{fv.object}.
 }
 \examples{
@@ -63,7 +46,7 @@ library(spatstat.geom) # ?spatstat.geom::subset.ppp
 
 # numeric mark
 plot(x <- Emark(spruces))
-ynm.fv(x)
+key1.fv(x)
 trapz.fv(x)
 tail(cumtrapz.fv(x))
 
@@ -82,7 +65,7 @@ tail(cumtrapz.fv(x))
 # multitype
 (btc = subset.ppp(betacells, select = 'type'))
 plot(x <- Gcross(btc, i = 'off', j = 'on'))
-ynm.fv(x)
+key1.fv(x)
 trapz.fv(x)
 tail(cumtrapz.fv(x))
 
