@@ -58,24 +58,9 @@ NULL
 #' @importFrom spatstat.explore plot.fv
 #' @export
 key1.fv <- function(X, ...) {
-  
-  # unlike ?graphics::barplot.default, ?graphics::boxplot.default, or ?graphics::hist.default
-  # ?spatstat.explore::plot.fv 
-  # a). does *not* have a parameter `plot` to suppress the plot
-  # b). passes `...` to ?graphics::plot.default, which does *not* have an option to suppress plot
-  
-  f. <- tempfile(fileext = '.png')
-  png(filename = f.)
-  d <- plot.fv(X) # 'data.frame'
-  dev.off()
-  file.remove(f.)
-  
-  # opening/closing a device, then creating a plot, in batch process is extremely slow
-  # tzh is writing to Dr. Baddeley
-  
+  d <- plot.fv(X, do.plot = FALSE) # 'data.frame'
   key <- with(d, expr = key[lty == 1L])
   return(key)
-  
 }
 
 

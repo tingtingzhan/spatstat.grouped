@@ -13,6 +13,11 @@ check_fvlist <- function(X, ...) {
 }
 
 
+key1_fvlist <- function(X, ...) {
+  vapply(X, FUN = key1.fv, FUN.VALUE = NA_character_)
+}
+
+
 
 #' @title Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s
 #' 
@@ -44,8 +49,7 @@ y.fvlist <- function(X, check = TRUE, ...) {
   
   r <- X[[1L]][[1L]]
   
-  # ret <- lapply(X, FUN = function(x) x[[key1.fv(x)]]) # correct, but extremely slow
-  ret <- lapply(X, FUN = `[[`, key1.fv(X[[1L]])) |> # wrong, but fasts
+  ret <- lapply(X, FUN = function(x) x[[key1.fv(x)]]) |>
     unlist(use.names = FALSE)
   dim(ret) <- c(length(r), length(X))
   dimnames(ret) <- list(r, NULL)
