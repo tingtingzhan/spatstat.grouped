@@ -142,7 +142,11 @@ key1.fv <- function(X, ...) {
 #' @importFrom pracma trapz
 #' @export
 trapz.fv <- function(X, ...) {
-  X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
+  
+  # do NOT do this!!
+  #X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
+  # this changes the length of outcome, so that they cannot be combined into a matrix
+  
   return(trapz(x = X[[1L]], y = X[[key1.fv(X)]]))
 }
 
@@ -159,17 +163,21 @@ trapz.fv <- function(X, ...) {
 #' @export 
 cumtrapz.fv <- function(X, ...) {
   
-  X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
+  # do NOT do this!!
+  #X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
+  # this changes the length of outcome, so that they cannot be combined into a matrix
   
   # 'fv' inherits from 'data.frame', as of 2024-10-22 # packageDate('spatstat.explore')
-  nr <- .row_names_info(X, type = 2L)
-  if (nr == 1L) return(invisible()) # exception handling
+  x <- X[[1L]]
+  y <- X[[key1.fv(X)]]
+  n <- length(x)
+  if (n == 1L) return(invisible()) # exception handling
   # needed! Otherwise ?pracma::cumtrapz errs
 
   # a trapz needs two points
   # therefore `[-1L]`
-  ret <- c(cumtrapz(x = X[[1L]], y = X[[key1.fv(X)]])[-1L])
-  names(ret) <- X[[1L]][-1L]
+  ret <- c(cumtrapz(x = x, y = y)[-1L])
+  names(ret) <- x[-1L]
   return(ret)
   
 }

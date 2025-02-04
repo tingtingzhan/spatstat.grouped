@@ -1,5 +1,28 @@
 
 
+#' @title check_fvlist
+#' 
+#' @param X a \link[base]{list} of \link[spatstat.explore]{fv.object}s
+#' 
+#' @param ... additional parameters, currently not in use
+#' 
+#' @details
+#' To check
+#' \itemize{
+#' \item {if \eqn{x}-axis of all \link[spatstat.explore]{fv.object}s are all same}
+#' \item {`attr(,'fname')` of all \link[spatstat.explore]{fv.object}s are all same}
+#' }
+#' 
+#' Note that
+#' \itemize{
+#' \item {function [key1.fv] returns of all \link[spatstat.explore]{fv.object}s are not required to be all same}
+#' }
+#' 
+#' @returns 
+#' Function [check_fvlist] does not have a returned value.
+#' 
+#' @keywords internal
+#' @export
 check_fvlist <- function(X, ...) {
   
   x <- lapply(X, FUN = `[[`, 1L)
@@ -14,6 +37,7 @@ check_fvlist <- function(X, ...) {
 
 
 key1_fvlist <- function(X, ...) {
+  .Defunct(msg = 'currently not using')
   vapply(X, FUN = key1.fv, FUN.VALUE = NA_character_)
 }
 
@@ -23,7 +47,9 @@ key1_fvlist <- function(X, ...) {
 #' 
 #' @param X a \link[base]{list} of \link[spatstat.explore]{fv.object}s
 #' 
-#' @param check \link[base]{logical} scalar
+#' @param check \link[base]{logical} scalar, an option to suppress 
+#' function [check_fvlist] in a batch process.
+#' Default `TRUE`
 #' 
 #' @param ... additional parameters, currently not in use
 #' 
@@ -41,11 +67,8 @@ y.fvlist <- function(X, check = TRUE, ...) {
   if (check) check_fvlist(X, ...)
 
   # if (any(!is.finite.fv(X[[1L]])))
-  # needs to check infinite status being same accross all `X`.
-  # then, should we
-  # .. do X[[i]][is.finite.fv(X[[i]])]
-  # .. simply let `ret[is.infinite(ret)] <- NA_real_`
-  # ????
+  # just leave infinite `y` as-is
+  # no need to convert them to NA_real_
   
   r <- X[[1L]][[1L]]
   
@@ -73,7 +96,7 @@ cumtrapz.fvlist <- function(X, check = TRUE, ...) {
   # same question:
   # how to deal with infinite.fv ?
   # here we have to `X[[i]][is.finite.fv(X[[i]])]`
-  # because NA_real_ will not help with pracma::trapz
+  # because NA_real_ does not help with pracma::trapz
   
   r <- X[[1L]][[1L]][-1L]
   

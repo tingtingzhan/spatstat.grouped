@@ -13,7 +13,9 @@ cumtrapz.fvlist(X, check = TRUE, ...)
 \arguments{
 \item{X}{a \link[base]{list} of \link[spatstat.explore]{fv.object}s}
 
-\item{check}{\link[base]{logical} scalar}
+\item{check}{\link[base]{logical} scalar, an option to suppress
+function \link{check_fvlist} in a batch process.
+Default \code{TRUE}}
 
 \item{...}{additional parameters, currently not in use}
 }

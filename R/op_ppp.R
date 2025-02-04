@@ -129,7 +129,7 @@ fv_ppp <- function(x, fn, mark_nm, ...) {
   # applicable to none-mark \link[spatstat.geom]{ppp.object}
   # how to deal?
   
-  if (!xor(fn_numeric, fn_mtp)) stop('unknown fv-function to Tingting?')
+  if (!xor(fn_numeric, fn_mtp)) stop('unknown fv-function to tzh?')
   
   x.. <- if (fn_numeric) {
     if (!any(num)) return(invisible())
@@ -141,7 +141,8 @@ fv_ppp <- function(x, fn, mark_nm, ...) {
   
   ret <- lapply(x.., FUN = fn, ...)
   
-  # restore `fv` from the result
+  # restore names of `fv`-hypercolumns from the result
+  # attr(,'fname') is determined by `fn`
   fname1 <- attr(ret[[1L]], which = 'fname', exact = TRUE)[1L]
   names(ret) <- paste(names(ret), fname1, sep = '.')
   
