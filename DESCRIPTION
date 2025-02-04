@@ -17,7 +17,7 @@ Authors@R: c(person(given = 'Tingting', family = 'Zhan', role =
        family = 'Chervoneva', role = c('aut'), email =
        'Inna.Chervoneva@jefferson.edu', comment = c(ORCID =
        '0000-0002-9104-4505')))
-Imports: cli, grDevices, parallel, stats, nlme, matrixStats, pracma,
+Imports: cli, parallel, stats, nlme, matrixStats, pracma,
        spatstat.explore, spatstat.geom
 Suggests: knitr, survival, spatstat.data, spatstat.univar,
        spatstat.grouped.data
