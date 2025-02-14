@@ -21,7 +21,7 @@ Handle Missing \link[spatstat.geom]{marks} in \link[spatstat.geom]{ppp.object}.
 Function \link{na.omit.ppp} omits missing \link[spatstat.geom]{marks} in a \link[spatstat.geom]{ppp.object}.
 }
 \note{
-Tingting suppose missing \verb{$x} and \verb{$y} are
+tzh suppose missing \verb{$x} and \verb{$y} are
 forbidden in \link[spatstat.geom]{ppp.object} anyway.
 }
 \examples{

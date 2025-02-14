@@ -54,7 +54,7 @@ key1_fvlist <- function(X, ...) {
 #' @param ... additional parameters, currently not in use
 #' 
 #' @details
-#' Function [y.fvlist] gathers the primary outcome (via [key1.fv])
+#' Function [key1val.fvlist] gathers the primary outcome (via [key1.fv])
 #' of the \link[spatstat.explore]{fv.object}s.
 #' 
 #' @returns
@@ -62,23 +62,24 @@ key1_fvlist <- function(X, ...) {
 #' 
 #' @name fvlist
 #' @export
-y.fvlist <- function(X, check = TRUE, ...) {
+key1val.fvlist <- function(X, check = TRUE, ...) {
   
   if (check) check_fvlist(X, ...)
 
-  # if (any(!is.finite.fv(X[[1L]])))
-  # just leave infinite `y` as-is
-  # no need to convert them to NA_real_
-  
   r <- X[[1L]][[1L]]
   
-  ret <- lapply(X, FUN = function(x) x[[key1.fv(x)]]) |>
+  ret <- lapply(X, FUN = function(x) {
+    key1nonfinite(x) <- 0 # do I want to do this here?
+    x[[key1.fv(x)]]
+  }) |>
     unlist(use.names = FALSE)
   dim(ret) <- c(length(r), length(X))
   dimnames(ret) <- list(r, NULL)
   return(t.default(ret))
   
 }
+
+
 
 
 
@@ -130,10 +131,10 @@ cumtrapz.fvlist <- function(X, check = TRUE, ...) {
 #trapz.fvlist <- function(X, ...) vapply(X, FUN = trapz.fv, ..., FUN.VALUE = NA_real_)
 
 
-# do NOT define `[.fvlist`; Tingting does not want to override `[` for 'list'
+# do NOT define `[.fvlist`
+# tzh does not want to override `[` for 'list'
 # @export
 #subset.fvlist <- function(x, subset, ...) {
-# the batch process of ?spatstat.explore::`[.fv`
 #}
 
 

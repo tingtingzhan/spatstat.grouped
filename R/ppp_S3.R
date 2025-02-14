@@ -60,7 +60,7 @@ log.ppp <- function(x, base = exp(1)) {
 #' Function [na.omit.ppp] returns a \link[spatstat.geom]{ppp.object}.
 #' 
 #' @note
-#' Tingting suppose missing `$x` and `$y` are 
+#' tzh suppose missing `$x` and `$y` are 
 #' forbidden in \link[spatstat.geom]{ppp.object} anyway.
 #' 
 #' @examples

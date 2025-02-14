@@ -3,11 +3,14 @@
 \name{op_fv}
 \alias{op_fv}
 \alias{key1.fv}
+\alias{key1val.fv}
 \alias{trapz.fv}
 \alias{cumtrapz.fv}
 \title{Operations on \link[spatstat.explore]{fv.object}}
 \usage{
 key1.fv(X, ...)
+
+key1val.fv(X, ...)
 
 trapz.fv(X, ...)
 
@@ -20,6 +23,8 @@ cumtrapz.fv(X, ...)
 }
 \value{
 Function \link{key1.fv} returns a \link[base]{character} scalar.
+
+Function \link{key1val.fv} returns a \link[base]{numeric} \link[base]{vector}.
 
 Function \link{trapz.fv} returns a \link[base]{numeric} scalar.
 

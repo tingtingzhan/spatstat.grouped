@@ -88,7 +88,7 @@ grouped_ppp <- function(
 
 
 
-# Tingting is not ready to suggest changing [split.ppp] to Dr. Baddeley, yet..
+# tzh is not ready to suggest changing [split.ppp] to Dr. Baddeley, yet..
 # [split_ppp_dataframe] is a bandage-fix which respects col-1 dataframe
 #' @importFrom spatstat.geom markformat.ppp
 split_ppp_dataframe <- function(x, f) {

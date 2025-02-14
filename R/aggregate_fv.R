@@ -19,7 +19,7 @@
 #' @param ... additional parameters, currently not in use
 #' 
 # @note 
-# Tingting hesitates to create a function of `aggregate.hyperframe`,
+# tzh hesitates to create a function of `aggregate.hyperframe`,
 # which could be claimed by \CRANpkg{spatstat} authors in future.
 # -- Inna is correct: we do not aggregate-hyperframe, we aggregate-fv-columns-inside-hyperframe.
 #' 
@@ -53,6 +53,8 @@ aggregate_fv <- function(
     ...
 ) {
   
+  if (!inherits(X, what = 'hyperframe')) stop('input must be hyperframe')
+  
   if (!any(id <- (unclass(X)$vclass == 'fv'))) stop('input `X` must contain at least one `fv` column')
   
   fv <- as.list.hyperframe(X)[names.hyperframe(X)[id]] # one or more 'fv' column(s)
@@ -60,7 +62,7 @@ aggregate_fv <- function(
   f. <- function(x) {
     check_fvlist(x)
     return(list(
-      value = y.fvlist(x, check = FALSE), 
+      value = key1val.fvlist(x, check = FALSE), 
       cumarea = cumtrapz.fvlist(x, check = FALSE)
     ))
   }

@@ -48,6 +48,8 @@ aggregate_num <- function(
     ...
 ) {
   
+  if (!inherits(X, what = 'hyperframe')) stop('input must be hyperframe')
+  
   # Step 1: Find numeric information
 
   hc <- unclass(X)$hypercolumns

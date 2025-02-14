@@ -30,6 +30,11 @@ is.finite.fv <- function(x) {
 
 
 
+
+
+
+
+
 #' @title Operations on \link[spatstat.explore]{fv.object}
 #' 
 #' @description
@@ -63,7 +68,15 @@ key1.fv <- function(X, ...) {
   return(key)
 }
 
-
+#' @rdname op_fv
+#' 
+#' @returns
+#' Function [key1val.fv] returns a \link[base]{numeric} \link[base]{vector}.
+#' 
+#' @export
+key1val.fv <- function(X, ...) {
+  X[[key1.fv(X)]]
+}
 
 
 
@@ -142,16 +155,9 @@ key1.fv <- function(X, ...) {
 #' @importFrom pracma trapz
 #' @export
 trapz.fv <- function(X, ...) {
-  
-  # do NOT do this!!
-  #X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
-  # this changes the length of outcome, so that they cannot be combined into a matrix
-  
+  key1nonfinite(X) <- 0
   return(trapz(x = X[[1L]], y = X[[key1.fv(X)]]))
 }
-
-
-
 
 
 #' @rdname op_fv
@@ -163,11 +169,9 @@ trapz.fv <- function(X, ...) {
 #' @export 
 cumtrapz.fv <- function(X, ...) {
   
-  # do NOT do this!!
-  #X <- X[is.finite.fv(X)] # to invoke ?spatstat.explore::`[.fv`
-  # this changes the length of outcome, so that they cannot be combined into a matrix
+  key1nonfinite(X) <- 0
   
-  # 'fv' inherits from 'data.frame', as of 2024-10-22 # packageDate('spatstat.explore')
+  # 'fv' inherits from 'data.frame', as of 2025-02-04 # packageDate('spatstat.explore')
   x <- X[[1L]]
   y <- X[[key1.fv(X)]]
   n <- length(x)

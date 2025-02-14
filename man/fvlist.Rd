@@ -2,11 +2,11 @@
 % Please edit documentation in R/fvlist.R
 \name{fvlist}
 \alias{fvlist}
-\alias{y.fvlist}
+\alias{key1val.fvlist}
 \alias{cumtrapz.fvlist}
 \title{Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s}
 \usage{
-y.fvlist(X, check = TRUE, ...)
+key1val.fvlist(X, check = TRUE, ...)
 
 cumtrapz.fvlist(X, check = TRUE, ...)
 }
@@ -26,7 +26,7 @@ All functions return a \link[base]{double} \link[base]{matrix}.
 Operations on a \link[base]{list} of \link[spatstat.explore]{fv.object}s
 }
 \details{
-Function \link{y.fvlist} gathers the primary outcome (via \link{key1.fv})
+Function \link{key1val.fvlist} gathers the primary outcome (via \link{key1.fv})
 of the \link[spatstat.explore]{fv.object}s.
 
 Function \link{cumtrapz.fvlist} is a batch process of function \link{cumtrapz.fv}.
