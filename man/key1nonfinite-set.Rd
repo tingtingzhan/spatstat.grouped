@@ -19,8 +19,8 @@ the \code{NaN} and \code{Inf} elements. Default \code{0}.}
 library(spatstat.data)
 library(spatstat.explore)
 # ?markcorr
-r1 = seq(from = 0, to = 25, by = 1)
-r2 = seq(from = 0, to = 250, by = 10)
+r1 = seq.int(from = 0, to = 25, by = 1)
+r2 = seq.int(from = 0, to = 250, by = 10)
 markcorr(spruces, r = r1) |> key1val.fv()
 markcorr(spruces, r = r2) |> key1val.fv()
 
