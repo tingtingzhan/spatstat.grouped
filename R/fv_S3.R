@@ -155,7 +155,7 @@ key1val.fv <- function(X, ...) {
 #' @importFrom pracma trapz
 #' @export
 trapz.fv <- function(X, ...) {
-  key1nonfinite(X) <- 0
+  #key1nonfinite(X) <- 0
   return(trapz(x = X[[1L]], y = X[[key1.fv(X)]]))
 }
 
@@ -169,7 +169,7 @@ trapz.fv <- function(X, ...) {
 #' @export 
 cumtrapz.fv <- function(X, ...) {
   
-  key1nonfinite(X) <- 0
+  #key1nonfinite(X) <- 0
   
   # 'fv' inherits from 'data.frame', as of 2025-02-04 # packageDate('spatstat.explore')
   x <- X[[1L]]

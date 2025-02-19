@@ -61,9 +61,16 @@ aggregate_fv <- function(
   
   f. <- function(x) {
     check_fvlist(x)
+    
+    cumtrapz. <- cumtrapz.fvlist(x, check = FALSE)
+    if (anyNA(cumtrapz.)) {
+      id <- min(rowSums(!is.na(cumtrapz.)))
+      warning('try to limit `r` from ', x[[1L]]$r[1L], ' to ', x[[1L]]$r[id])
+    }
+    
     return(list(
       value = key1val.fvlist(x, check = FALSE), 
-      cumarea = cumtrapz.fvlist(x, check = FALSE)
+      cumarea = cumtrapz.
     ))
   }
   

@@ -69,7 +69,7 @@ key1val.fvlist <- function(X, check = TRUE, ...) {
   r <- X[[1L]][[1L]]
   
   ret <- lapply(X, FUN = function(x) {
-    key1nonfinite(x) <- 0 # do I want to do this here?
+    #key1nonfinite(x) <- 0 # do I want to do this here?
     x[[key1.fv(x)]]
   }) |>
     unlist(use.names = FALSE)
