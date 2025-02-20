@@ -45,6 +45,7 @@
 #' dim(flu_spat$pattern.G.value)
 #' dim(flu_spat$pattern.G.cumarea)
 #' @importFrom spatstat.geom names.hyperframe
+#' @importFrom stats setNames
 #' @export
 aggregate_fv <- function(
     X, 
@@ -59,26 +60,24 @@ aggregate_fv <- function(
   
   fv <- as.list.hyperframe(X)[names.hyperframe(X)[id]] # one or more 'fv' column(s)
   
-  f. <- function(x) {
+  ret0 <- lapply(setNames(nm = names(fv)), FUN = function(nm) {
+    x <- fv[[nm]]
     check_fvlist(x)
-    
     cumtrapz. <- cumtrapz.fvlist(x, check = FALSE)
     if (anyNA(cumtrapz.)) {
       id <- min(rowSums(!is.na(cumtrapz.)))
-      warning('try to limit `r` from ', x[[1L]]$r[1L], ' to ', x[[1L]]$r[id])
+      message(col_cyan(nm), ': please limit ', col_magenta('r'), ' from ', x[[1L]]$r[1L], ' to ', x[[1L]]$r[id])
     }
-    
     return(list(
       value = key1val.fvlist(x, check = FALSE), 
       cumarea = cumtrapz.
     ))
-  }
-  
-  ret0 <- fv |> 
-    lapply(FUN = f.) |>
+  })
+
+  ret1 <- ret0 |>
     unlist(recursive = FALSE, use.names = TRUE) # smart!!
   
-  aggregate_by_(dots = ret0, X = X, by = by, f_aggr_ = f_aggr_)
+  aggregate_by_(dots = ret1, X = X, by = by, f_aggr_ = f_aggr_)
 
 }
 

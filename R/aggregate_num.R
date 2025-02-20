@@ -103,7 +103,7 @@ aggregate_num <- function(
 #' a \link[base]{list} of \link[base]{numeric} \link[base]{matrix}es.
 #'  
 #' @keywords internal
-#' @importFrom cli col_cyan
+#' @importFrom cli col_cyan col_magenta
 #' @importFrom matrixStats colMedians colMaxs colMins
 #' @export
 aggregate_by_ <- function(
@@ -121,7 +121,9 @@ aggregate_by_ <- function(
   if (!is.call(by) || by[[1L]] != '~' || length(by) != 2L) stop('`by` must be one-sided formula')
   if (!is.symbol(by. <- by[[2L]])) {
     new_by <- vapply(all.vars(by.), FUN = function(x) deparse1(call(name = '~', as.symbol(x))), FUN.VALUE = '')
-    message(col_cyan('For parameter `by`, a grouped structure ', sQuote(deparse1(by)), ' is not allowed, please use either one of ', paste(sQuote(new_by), collapse = ', '), '.'))
+    message('grouped structure ', col_cyan(paste('by =', deparse1(by))), ' is not allowed')
+    new_by_txt <- col_magenta(paste('by =', new_by))
+    message('please use either one of ', paste(new_by_txt, collapse = ', '), '.')
     stop('`by` must be a formula and right-hand-side must be a symbol')
   }
   # `group` 'up-to' `by.`
