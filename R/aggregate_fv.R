@@ -36,14 +36,14 @@
 #' library(spatstat.data)
 #' library(spatstat.geom)
 #' r = seq.int(from = 0, to = 100, by = 5)
-#' flu_spat = flu |>
+#' m = flu |>
 #'  subset(stain == 'M2-M1') |>
-#'  as.groupedHyperframe(group = ~ virustype/frameid) |>
 #'  Gcross_(i = 'M1', j = 'M2', r = r, correction = 'best') |>
+#'  as.groupedHyperframe(group = ~ virustype/frameid) |>
 #'  aggregate_fv(by = ~ virustype)
-#' names(flu_spat)
-#' dim(flu_spat$pattern.G.value)
-#' dim(flu_spat$pattern.G.cumarea)
+#' names(m)
+#' dim(m$pattern.G.value)
+#' dim(m$pattern.G.cumarea)
 #' @importFrom spatstat.geom names.hyperframe
 #' @importFrom stats setNames
 #' @export

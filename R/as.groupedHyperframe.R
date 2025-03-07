@@ -12,6 +12,10 @@
 #' @export
 as.groupedHyperframe <- function(x, ...) UseMethod(generic = 'as.groupedHyperframe')
 
+
+
+
+
 #' @rdname as.groupedHyperframe
 #' 
 #' @param group \link[stats]{formula}
